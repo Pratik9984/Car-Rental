@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Download, ChevronRight, Clock, Headset, Shield, ShieldCheck, Heart, Award, Users, Star, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,19 +19,19 @@ const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 35 },
   visible: { 
     opacity: 1, 
     y: 0, 
     transition: { 
       duration: 0.8, 
-      ease: [0.25, 0.1, 0.25, 1.0] 
+      ease: [0.25, 0.1, 0.25, 1.0] as const 
     } 
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
