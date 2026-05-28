@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { 
   Download, ChevronRight, Clock, Headset, Shield, ShieldCheck, 
   Search, X, Check, ArrowRight, Star, Calendar 
@@ -23,19 +23,19 @@ const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 35 },
   visible: { 
     opacity: 1, 
     y: 0, 
     transition: { 
       duration: 0.8, 
-      ease: [0.25, 0.1, 0.25, 1.0] 
+      ease: [0.25, 0.1, 0.25, 1.0] as const 
     } 
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -791,7 +791,7 @@ export default function CarsPage() {
                             <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Reservation Details</span>
                             
                             {/* Service toggle inside Modal */}
-                            <div className="bg-[#f5f5f7] border border-[#d2d2d7]/40 p-0.5 rounded-xl flex text-[9px] font-bold">
+                            <div className="bg-[#f5f5f7] p-0.5 rounded-xl flex text-[9px] font-bold border border-gray-200">
                               <button suppressHydrationWarning
                                 type="button"
                                 onClick={() => setServiceMode("self-drive")}
@@ -1161,7 +1161,7 @@ export default function CarsPage() {
                             <button suppressHydrationWarning
                               type="button"
                               onClick={() => setIsPaying(false)}
-                              className="w-full text-center text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-wider py-1"
+                              className="w-full text-center text-center text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-wider py-1"
                             >
                               ← Go Back to Form
                             </button>
@@ -1292,7 +1292,7 @@ export default function CarsPage() {
                 ✓ Thank you for subscribing!
               </span>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex items-center border-b border-gray-300 pb-2">
+              <form onSubmit={handleSubscribe} className="flex items-center border-b border-b border-gray-300 pb-2">
                 <input suppressHydrationWarning
                   type="email"
                   value={email}
