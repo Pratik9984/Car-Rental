@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Download, ChevronRight, Clock, Headset, Shield, ShieldCheck, Mail, Phone, MapPin, Send, Check } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,15 +19,15 @@ const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 35 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.8, 
-      ease: [0.25, 0.1, 0.25, 1.0] 
-    } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1.0]
+    }
   },
 };
 
@@ -35,7 +35,7 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { 
+    transition: {
       staggerChildren: 0.12,
       delayChildren: 0.05
     },
@@ -82,7 +82,7 @@ export default function Contact() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success">("idle");
-  
+
   // Contact Form State
   const [fullName, setFullName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -123,7 +123,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans overflow-x-hidden flex flex-col justify-between">
-      
+
       {/* --- HEADER NAVBAR --- */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
@@ -300,7 +300,7 @@ export default function Contact() {
 
       {/* --- SPLIT GRID SECTION --- */}
       <section className="px-6 md:px-10 max-w-7xl mx-auto w-full grid md:grid-cols-12 gap-10 pb-20 items-stretch">
-        
+
         {/* LEFT: CONCIERGE INFORMATION CARDS (5 cols) */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -366,7 +366,7 @@ export default function Contact() {
             <h3 className="font-bold text-sm text-black flex items-center gap-2">
               <MapPin size={16} className="text-[#0071e3]" /> Our Luxury Handovers
             </h3>
-            
+
             <div className="space-y-3 text-xs font-semibold text-gray-500">
               <div className="flex justify-between items-start border-b border-gray-100 pb-2">
                 <span>Pune Airport VIP Hub:</span>
@@ -527,7 +527,7 @@ export default function Contact() {
       {/* --- INTERACTIVE HUB MAPS SECTION --- */}
       <section className="bg-white border-t border-gray-200/50 py-20 px-6 md:px-10">
         <div className="max-w-7xl mx-auto space-y-12">
-          
+
           <div className="text-center max-w-lg mx-auto space-y-4">
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#0071e3] font-mono block">OUR HUB GEOGRAPHY</span>
             <h2 className="text-3xl font-bold text-black tracking-tight leading-tight">
@@ -539,18 +539,17 @@ export default function Contact() {
           </div>
 
           <div className="grid md:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
-            
+
             {/* Hub Selector tabs (4 cols) */}
             <div className="md:col-span-4 space-y-3">
               {hubsData.map((hub, idx) => (
                 <button suppressHydrationWarning
                   key={idx}
                   onClick={() => setSelectedHub(idx)}
-                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col gap-1.5 ${
-                    selectedHub === idx
-                      ? "bg-white border-blue-500/30 shadow-[0_12px_35px_rgba(0,113,227,0.06)] scale-[1.02]"
-                      : "bg-[#f5f5f7]/50 border-gray-100 hover:bg-[#f5f5f7] hover:scale-[1.01]"
-                  }`}
+                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col gap-1.5 ${selectedHub === idx
+                    ? "bg-white border-blue-500/30 shadow-[0_12px_35px_rgba(0,113,227,0.06)] scale-[1.02]"
+                    : "bg-[#f5f5f7]/50 border-gray-100 hover:bg-[#f5f5f7] hover:scale-[1.01]"
+                    }`}
                 >
                   <h4 className={`font-bold text-sm transition ${selectedHub === idx ? "text-[#0071e3]" : "text-black"}`}>
                     {hub.name}
@@ -568,13 +567,13 @@ export default function Contact() {
 
             {/* Stylized Visual Map Canvas (8 cols) */}
             <div className="md:col-span-8 bg-gray-100/80 border border-gray-200/50 rounded-3xl h-[340px] relative overflow-hidden flex items-center justify-center group shadow-sm select-none">
-              
+
               {/* stylized background canvas grid */}
               <div className="absolute inset-0 bg-linear-to-br from-gray-50/70 to-gray-200/40" />
-              
+
               {/* grid overlay */}
               <div className="absolute inset-0 bg-[radial-gradient(#e0e0e0_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-70" />
-              
+
               {/* Outline map visual fallbacks */}
               <div className="absolute w-[240px] h-[240px] rounded-full border border-gray-200/50 animate-pulse pointer-events-none" />
               <div className="absolute w-[440px] h-[440px] rounded-full border border-gray-200/25 pointer-events-none" />
