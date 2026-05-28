@@ -1,0 +1,37 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import AIChatBot from "./components/AIChatBot";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Unique | Premium Self-Drive Car Rentals & Luxury Taxi Services",
+  description: "Experience luxury mobility on your own terms. Rent high-end self-drive cars or book chauffeured services with driver in Pune, Mumbai, and Goa. No security deposit options available.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col">
+        {children}
+        <AIChatBot />
+      </body>
+    </html>
+  );
+}
