@@ -278,6 +278,28 @@ const features = [
   },
 ];
 
+// Explicitly Exporting the Shared Interface Type for Child Directory Consumption
+export interface Car {
+  name: string;
+  category: string;
+  price: number;
+  images: string[];
+  specs: {
+    engine: string;
+    transmission: string;
+    power: string;
+    seats: string;
+    drive: string;
+    fuel: string;
+    mileage: string;
+  };
+  features: string[];
+  overview: string;
+  damagePolicy: string;
+  terms: string[];
+  serviceType?: string[];
+}
+
 export default function Home() {
   // --- DIRECT BOOKING MODAL STATE ---
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -966,7 +988,7 @@ export default function Home() {
               >
                 <div className="space-y-4">
                   <div className="w-full h-48 rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center">
-                    <img src={car.images[0]} alt={car.name} className="w-full h-full object-cover transform group-hover:scale-105 transition duration-500" />
+                    <img src={car.images[0]} alt={car.name} className="w-full h-full object-cover transform group-hover:scale-105 transition duration duration-500" />
                   </div>
                   <div className="flex justify-between items-start text-left">
                     <div>
