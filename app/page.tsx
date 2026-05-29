@@ -545,32 +545,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center justify-between px-6 md:px-10 py-4 max-w-7xl mx-auto w-full z-[10002] relative"
       >
-        <div 
-          className="relative inline-flex flex-col items-center select-none cursor-pointer z-[10002]"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          {/* Micro SUV Track above "Unique" */}
-          <div className="relative w-full h-4 overflow-hidden pointer-events-none -mb-1">
-            <motion.div
-              animate={{ left: ["110%", "-30%", "-30%"] }}
-              transition={{
-                repeat: Infinity,
-                duration: 6.7,
-                times: [0, 0.8, 1],
-                ease: "linear"
-              }}
-              className="absolute flex items-center bottom-0 gap-0.5"
-            >
-              <span className="text-[13px]">🚙</span>
-              <span className="text-[9px] opacity-75">💨</span>
-            </motion.div>
-            <div className="absolute bottom-0 left-0.5 right-0.5 h-[1px] border-b border-dashed border-gray-200" />
-          </div>
-          
-          <div className="text-2xl font-bold tracking-tighter text-black">
-            Unique
-          </div>
-        </div>
+        <div className="text-2xl font-bold tracking-tighter z-[10002] relative cursor-pointer text-black" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Unique</div>
         <div className="hidden md:flex space-x-6 text-sm font-medium items-center">
 
           <div className="relative">
@@ -727,40 +702,20 @@ export default function Home() {
         {/* Hero Text Presentation block */}
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-4 md:space-y-6 text-left order-2 md:order-1">
 
-          <div className="inline-flex flex-col items-stretch -mb-2 select-none pointer-events-none">
-            {/* Micro Car Infinite Track Loop Component */}
-            <div className="relative w-full h-7 overflow-hidden select-none pointer-events-none mb-1">
-              <motion.div
-                animate={{ left: ["-18%", "110%", "110%"] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 8.375,
-                  times: [0, 0.8, 1],
-                  ease: "linear"
-                }}
-                className="absolute flex items-center bottom-0.5 gap-1"
-              >
-                <span className="text-sm opacity-80">💨</span>
-                <span className="scale-x-[-1] inline-block text-[19px]">🚗</span>
-              </motion.div>
-              <div className="absolute bottom-0 left-2 right-2 h-[1px] border-b border-dashed border-gray-200" />
-            </div>
-
-            <motion.div variants={fadeUp} className="inline-flex bg-white/80 backdrop-blur-md p-1 rounded-2xl border border-gray-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)] pointer-events-auto">
-              <button suppressHydrationWarning
-                onClick={() => { setServiceMode("self-drive"); setActiveCategory("All"); }}
-                className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "self-drive" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
-              >
-                🚗 Self-Drive Rental
-              </button>
-              <button suppressHydrationWarning
-                onClick={() => { setServiceMode("taxi"); setActiveCategory("All"); }}
-                className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "taxi" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
-              >
-                💼 Taxi
-              </button>
-            </motion.div>
-          </div>
+          <motion.div variants={fadeUp} className="inline-flex bg-white/80 backdrop-blur-md p-1 rounded-2xl border border-gray-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
+            <button suppressHydrationWarning
+              onClick={() => { setServiceMode("self-drive"); setActiveCategory("All"); }}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "self-drive" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
+            >
+              🚗 Self-Drive Rental
+            </button>
+            <button suppressHydrationWarning
+              onClick={() => { setServiceMode("taxi"); setActiveCategory("All"); }}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "taxi" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
+            >
+              💼 Taxi
+            </button>
+          </motion.div>
 
           <AnimatePresence mode="wait">
             <motion.div
