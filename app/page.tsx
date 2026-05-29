@@ -3,7 +3,6 @@
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { Download, ChevronRight, ChevronLeft, Clock, Headset, Shield, ShieldCheck, X, Check, Sparkles, MapPin, Briefcase, ArrowRight, Star, Quote } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -18,8 +17,9 @@ const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
     <path d="M12.031 2C6.49 2 2 6.493 2 12.034c0 1.833.48 3.564 1.396 5.093l-1.353 4.939 5.076-1.33A9.972 9.972 0 0012.03 22c5.54 0 10.03-4.493 10.03-10.033C22.062 6.493 17.57 2 12.03 2zm6.096 14.145c-.266.745-1.531 1.356-2.102 1.439-.56.081-1.127.146-3.18-.7-2.63-1.085-4.307-3.756-4.437-3.931-.131-.175-1.066-1.417-1.066-2.699 0-1.282.673-1.912.912-2.164.24-.251.524-.315.7-.315.176 0 .352.002.505.009.16.007.377-.06.59.45.263.631.898 2.196.976 2.355.078.16.13.345.023.553-.105.21-.225.42-.375.592-.15.174-.316.362-.175.602.14.24.62 1.02 1.328 1.65.91.81 1.674 1.061 1.914 1.182.24.12.38.102.52-.06.14-.162.602-.702.763-.942.16-.24.32-.2.536-.12.217.08 1.38.651 1.618.77.24.12.399.18.459.282.06.102.06.59-.207 1.335z" />
   </svg>
 );
+import { useState, useRef, useEffect } from "react";
 
-// --- APPLE.COM ANIMATION VARIANTS (Type-Safe Fixes) ---
+// --- APPLE.COM ANIMATION VARIANTS ---
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 35 },
@@ -28,7 +28,7 @@ const fadeUp: Variants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1.0] as const
+      ease: [0.25, 0.1, 0.25, 1.0]
     }
   },
 };
@@ -52,7 +52,7 @@ const scaleIn: Variants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1.0] as const
+      ease: [0.25, 0.1, 0.25, 1.0]
     }
   },
 };
@@ -278,7 +278,8 @@ const features = [
   },
 ];
 
-// Explicitly Exporting the Shared Interface Type for Child Directory Consumption
+
+
 export interface Car {
   name: string;
   category: string;
@@ -340,7 +341,7 @@ export default function Home() {
     const diffTime = end.getTime() - start.getTime();
     if (diffTime < 0) return 0;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays || 1;
+    return diffDays || 1; // default to 1 day if same day
   };
 
   const handleBookingSubmit = (e: React.FormEvent) => {
@@ -352,12 +353,14 @@ export default function Home() {
 
   const handleSimulatePayment = () => {
     setPaymentStep("processing");
+
     setTimeout(() => {
       const randomId = "pay_mock_" + Math.random().toString(36).substr(2, 9).toUpperCase();
       const generatedRefCode = "UR-" + Math.floor(100000 + Math.random() * 900000);
       setPaymentId(randomId);
       setRefCode(generatedRefCode);
       setPaymentStep("success");
+
       setTimeout(() => {
         setIsPaying(false);
         setShowSuccess(true);
@@ -390,9 +393,12 @@ export default function Home() {
   };
 
   return (
+
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans overflow-x-hidden">
 
-      {/* --- FULLSCREEN SPLIT SELECTION SPLASH GATE --- */}
+      {/* ═══════════════════════════════════════════════════════════ */}
+      {/* FULLSCREEN SPLIT SELECTION SPLASH GATE                    */}
+      {/* ═══════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {!hasSelectedMode && (
           <motion.div
@@ -402,7 +408,7 @@ export default function Home() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[20000] flex flex-col md:flex-row select-none"
           >
-            {/* LEFT HALF: SELF-DRIVE */}
+            {/* ─── LEFT HALF: SELF-DRIVE ─── */}
             <motion.div
               onMouseEnter={() => setHoveredSplitSide("left")}
               onMouseLeave={() => setHoveredSplitSide(null)}
@@ -417,8 +423,11 @@ export default function Home() {
               transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               className="relative flex-1 bg-[#0a0a0a] flex flex-col items-center justify-center cursor-pointer overflow-hidden group"
             >
+              {/* Animated gradient background */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e] opacity-100" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(0,113,227,0.08),transparent_70%)]" />
+
+              {/* Floating particles */}
               <div className="absolute top-[20%] left-[15%] w-1 h-1 bg-white/10 rounded-full animate-pulse" />
               <div className="absolute top-[60%] left-[70%] w-1.5 h-1.5 bg-blue-400/10 rounded-full animate-pulse" style={{ animationDelay: "1s" }} />
               <div className="absolute top-[40%] left-[80%] w-1 h-1 bg-white/5 rounded-full animate-pulse" style={{ animationDelay: "2s" }} />
@@ -430,15 +439,23 @@ export default function Home() {
                 className="relative z-10 text-center px-8 max-w-md"
               >
                 <div className="text-5xl mb-6">🚗</div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-3">Take The Wheel</h2>
-                <p className="text-white/50 text-sm md:text-base leading-relaxed mb-8 font-medium">Command premium SUVs, convertibles & electric vehicles. Full freedom across Maharashtra & Goa with doorstep delivery.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-3">
+                  Take The Wheel
+                </h2>
+                <p className="text-white/50 text-sm md:text-base leading-relaxed mb-8 font-medium">
+                  Command premium SUVs, convertibles & electric vehicles. Full freedom across Maharashtra & Goa with doorstep delivery.
+                </p>
+
                 <motion.div
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-[0_8px_30px_rgba(255,255,255,0.1)] group-hover:shadow-[0_12px_40px_rgba(255,255,255,0.15)] transition-shadow duration-500"
                 >
-                  <Sparkles size={14} /> Enter Self-Drive <ArrowRight size={14} />
+                  <Sparkles size={14} />
+                  Enter Self-Drive
+                  <ArrowRight size={14} />
                 </motion.div>
+
                 <div className="mt-6 flex items-center justify-center gap-4 text-[10px] text-white/30 font-medium uppercase tracking-wider">
                   <span>Refundable Deposit</span>
                   <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -449,7 +466,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* RIGHT HALF: TAXI */}
+            {/* ─── RIGHT HALF: TAXI ─── */}
             <motion.div
               onMouseEnter={() => setHoveredSplitSide("right")}
               onMouseLeave={() => setHoveredSplitSide(null)}
@@ -464,8 +481,11 @@ export default function Home() {
               transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               className="relative flex-1 bg-[#f5f5f7] flex flex-col items-center justify-center cursor-pointer overflow-hidden group"
             >
+              {/* Subtle gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#f5f5f7] via-[#e8e8ed] to-[#d2d2d7] opacity-60" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,rgba(0,113,227,0.04),transparent_70%)]" />
+
+              {/* Floating particles */}
               <div className="absolute top-[30%] left-[25%] w-1 h-1 bg-black/5 rounded-full animate-pulse" />
               <div className="absolute top-[55%] left-[65%] w-1.5 h-1.5 bg-black/5 rounded-full animate-pulse" style={{ animationDelay: "1.5s" }} />
 
@@ -476,15 +496,23 @@ export default function Home() {
                 className="relative z-10 text-center px-8 max-w-md"
               >
                 <div className="text-5xl mb-6">💼</div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] tracking-tight leading-tight mb-3">Sit Back & Relax</h2>
-                <p className="text-gray-500 text-sm md:text-base leading-relaxed mb-8 font-medium">Professional uniformed drivers, zero security deposit, fuel & tolls fully inclusive. Airport VIP pickups available 24/7.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] tracking-tight leading-tight mb-3">
+                  Sit Back & Relax
+                </h2>
+                <p className="text-gray-500 text-sm md:text-base leading-relaxed mb-8 font-medium">
+                  Professional uniformed drivers, zero security deposit, fuel & tolls fully inclusive. Airport VIP pickups available 24/7.
+                </p>
+
                 <motion.div
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 bg-[#1d1d1f] text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-[0_8px_30px_rgba(0,0,0,0.08)] group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] transition-shadow duration-500"
                 >
-                  <Briefcase size={14} /> Enter Taxi Mode <ArrowRight size={14} />
+                  <Briefcase size={14} />
+                  Enter Taxi Mode
+                  <ArrowRight size={14} />
                 </motion.div>
+
                 <div className="mt-6 flex items-center justify-center gap-4 text-[10px] text-gray-400 font-medium uppercase tracking-wider">
                   <span>Zero Deposit</span>
                   <span className="w-1 h-1 rounded-full bg-gray-300" />
@@ -495,7 +523,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* CENTER FLOATING LOGO */}
+            {/* ─── CENTER FLOATING LOGO ─── */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -507,26 +535,37 @@ export default function Home() {
               </motion.div>
             </div>
 
+            {/* ─── DIVIDER LINE (Desktop: vertical, Mobile: horizontal) ─── */}
             <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent z-10" />
             <div className="md:hidden absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent z-10" />
+
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- NAVBAR --- */}
+
+
       <motion.nav
+
         initial={{ opacity: 0, y: -20 }}
+
         animate={{ opacity: 1, y: 0 }}
+
         className="flex items-center justify-between px-6 md:px-10 py-6 max-w-7xl mx-auto w-full z-[10002] relative"
+
       >
-        <div className="text-2xl font-bold tracking-tighter z-[10002] relative cursor-pointer text-black" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Unique</div>
+
+        <div className="text-2xl font-bold tracking-tighter z-[10002] relative cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Unique</div>
+
         <div className="hidden md:flex space-x-6 text-sm font-medium items-center">
-          
+
+          {/* Services Dropdown */}
           <div className="relative">
             <button suppressHydrationWarning
               onClick={() => setIsServicesOpen(!isServicesOpen)}
               onBlur={() => setTimeout(() => setIsServicesOpen(false), 200)}
-              className={`hover:text-black transition cursor-pointer font-bold px-3 py-1.5 rounded-full text-xs flex items-center gap-1 ${isServicesOpen ? "bg-black text-white shadow-xs" : "text-gray-500 hover:bg-gray-100"}`}
+              className={`hover:text-black transition cursor-pointer font-bold px-3 py-1.5 rounded-full text-xs flex items-center gap-1 ${isServicesOpen ? "bg-black text-white shadow-xs" : "text-gray-500 hover:bg-gray-100"
+                }`}
             >
               🚘 Services
               <ChevronRight size={12} className={`transition-transform duration-200 ${isServicesOpen ? "rotate-90" : ""}`} />
@@ -560,11 +599,16 @@ export default function Home() {
                           document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
                       }}
-                      className={`w-full text-left px-5 py-3 text-[13px] font-semibold flex items-center gap-3 transition cursor-pointer ${activeCategory === item.label ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white"} ${i === 0 ? "pt-4" : ""} ${i === 6 ? "pb-4" : ""}`}
+                      className={`w-full text-left px-5 py-3 text-[13px] font-semibold flex items-center gap-3 transition cursor-pointer ${activeCategory === item.label
+                          ? "bg-white/10 text-white"
+                          : "text-white/70 hover:bg-white/5 hover:text-white"
+                        } ${i === 0 ? "pt-4" : ""} ${i === 6 ? "pb-4" : ""}`}
                     >
                       <span className="text-base">{item.emoji}</span>
                       {item.label}
-                      {activeCategory === item.label && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#0071e3]" />}
+                      {activeCategory === item.label && (
+                        <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#0071e3]" />
+                      )}
                     </button>
                   ))}
                 </motion.div>
@@ -572,17 +616,65 @@ export default function Home() {
             </AnimatePresence>
           </div>
 
-          <button suppressHydrationWarning onClick={() => document.getElementById("how-it-works-section")?.scrollIntoView({ behavior: "smooth" })} className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer">How it Works</button>
-          <button suppressHydrationWarning onClick={() => document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" })} className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer">Features</button>
-          <button suppressHydrationWarning onClick={() => document.getElementById("showroom-section")?.scrollIntoView({ behavior: "smooth" })} className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer">Our Hubs</button>
-          <Link href="/about" className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer">About Us</Link>
-          <Link href="/contact" className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer">Contact Us</Link>
+          <button suppressHydrationWarning
+            onClick={() => document.getElementById("how-it-works-section")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer"
+          >
+            How it Works
+          </button>
+
+          <button suppressHydrationWarning
+            onClick={() => document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer"
+          >
+            Features
+          </button>
+
+          <button suppressHydrationWarning
+            onClick={() => document.getElementById("showroom-section")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer"
+          >
+            Our Hubs
+          </button>
+
+          <Link
+            href="/about"
+            className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer"
+          >
+            About Us
+          </Link>
+
+          <Link
+            href="/contact"
+            className="text-gray-500 hover:text-black transition font-semibold text-xs cursor-pointer"
+          >
+            Contact Us
+          </Link>
+
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <a href="https://www.instagram.com/uniquerentals" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white hover:scale-110 hover:shadow-[0_4px_20px_rgba(220,39,67,0.35)] transition-all duration-300 cursor-pointer" aria-label="Follow us on Instagram"><InstagramIcon size={16} /></a>
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#25d366] to-[#128c7e] flex items-center justify-center text-white hover:scale-110 hover:shadow-[0_4px_20px_rgba(37,211,102,0.35)] transition-all duration-300 cursor-pointer" aria-label="Contact us on WhatsApp"><WhatsAppIcon size={16} /></a>
-          <button suppressHydrationWarning className="flex bg-black text-white px-5 py-2.5 rounded-full text-xs font-medium items-center gap-2 hover:bg-gray-800 transition cursor-pointer"><Download size={14} /> Download App</button>
+          <a
+            href="https://www.instagram.com/uniquerentals"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white hover:scale-110 hover:shadow-[0_4px_20px_rgba(220,39,67,0.35)] transition-all duration-300 cursor-pointer"
+            aria-label="Follow us on Instagram"
+          >
+            <InstagramIcon size={16} />
+          </a>
+          <a
+            href="https://wa.me/919876543210"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#25d366] to-[#128c7e] flex items-center justify-center text-white hover:scale-110 hover:shadow-[0_4px_20px_rgba(37,211,102,0.35)] transition-all duration-300 cursor-pointer"
+            aria-label="Contact us on WhatsApp"
+          >
+            <WhatsAppIcon size={16} />
+          </a>
+          <button suppressHydrationWarning className="flex bg-black text-white px-5 py-2.5 rounded-full text-xs font-medium items-center gap-2 hover:bg-gray-800 transition cursor-pointer">
+            <Download size={14} /> Download App
+          </button>
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -592,11 +684,36 @@ export default function Home() {
           aria-label="Toggle Menu"
         >
           <div className="flex flex-col gap-1 w-5">
-            <motion.span variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: 45, y: 5 } }} animate={isMobileMenuOpen ? "open" : "closed"} transition={{ duration: 0.2 }} className="w-full h-0.5 bg-black rounded" />
-            <motion.span variants={{ closed: { opacity: 1, x: 0 }, open: { opacity: 0, x: -10 } }} animate={isMobileMenuOpen ? "open" : "closed"} transition={{ duration: 0.2 }} className="w-full h-0.5 bg-black rounded" />
-            <motion.span variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: -45, y: -5 } }} animate={isMobileMenuOpen ? "open" : "closed"} transition={{ duration: 0.2 }} className="w-full h-0.5 bg-black rounded" />
+            <motion.span
+              variants={{
+                closed: { rotate: 0, y: 0 },
+                open: { rotate: 45, y: 5 }
+              }}
+              animate={isMobileMenuOpen ? "open" : "closed"}
+              transition={{ duration: 0.2 }}
+              className="w-full h-0.5 bg-black rounded"
+            />
+            <motion.span
+              variants={{
+                closed: { opacity: 1, x: 0 },
+                open: { opacity: 0, x: -10 }
+              }}
+              animate={isMobileMenuOpen ? "open" : "closed"}
+              transition={{ duration: 0.2 }}
+              className="w-full h-0.5 bg-black rounded"
+            />
+            <motion.span
+              variants={{
+                closed: { rotate: 0, y: 0 },
+                open: { rotate: -45, y: -5 }
+              }}
+              animate={isMobileMenuOpen ? "open" : "closed"}
+              transition={{ duration: 0.2 }}
+              className="w-full h-0.5 bg-black rounded"
+            />
           </div>
         </button>
+
       </motion.nav>
 
       {/* Mobile Drawer Overlay */}
@@ -607,9 +724,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 top-0 left-0 right-0 h-screen bg-white/95 backdrop-blur-xl z-[10000] flex flex-col px-10 pt-28 space-y-6 md:hidden text-left"
+            className="fixed inset-0 top-0 left-0 right-0 h-screen bg-white/95 backdrop-blur-xl z-[10000] flex flex-col px-10 pt-28 space-y-6 md:hidden"
           >
-            <div className="flex flex-col space-y-6 text-xl font-bold tracking-tight">
+            <div className="flex flex-col space-y-6 text-xl font-bold text-left tracking-tight">
+              {/* Mobile Services Accordion */}
               <div>
                 <button suppressHydrationWarning
                   onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
@@ -646,46 +764,144 @@ export default function Home() {
                               document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" });
                             }, 150);
                           }}
-                          className={`text-left py-1 flex items-center gap-2 cursor-pointer font-semibold ${activeCategory === item.label ? "text-[#0071e3]" : "text-gray-500 hover:text-black"}`}
+                          className={`text-left py-1 flex items-center gap-2 cursor-pointer font-semibold ${activeCategory === item.label ? "text-[#0071e3]" : "text-gray-500 hover:text-black"
+                            }`}
                         >
-                          <span>{item.emoji}</span> {item.label}
+                          <span>{item.emoji}</span>
+                          {item.label}
                         </button>
                       ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
-              <button suppressHydrationWarning onClick={() => { setIsMobileMenuOpen(false); setTimeout(() => document.getElementById("how-it-works-section")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="text-left hover:text-black text-gray-500 transition py-2 border-b border-gray-100 cursor-pointer">How it Works</button>
-              <button suppressHydrationWarning onClick={() => { setIsMobileMenuOpen(false); setTimeout(() => document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="text-left hover:text-black text-gray-500 transition py-2 border-b border-gray-100 cursor-pointer">Features</button>
-              <button suppressHydrationWarning onClick={() => { setIsMobileMenuOpen(false); setTimeout(() => document.getElementById("showroom-section")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="text-left hover:text-black text-gray-500 transition py-2 border-b border-gray-100 cursor-pointer">Our Hubs</button>
-              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-left hover:text-black text-gray-500 transition py-2 border-b border-gray-100 font-bold block">About Us</Link>
-              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-left hover:text-black text-gray-500 transition py-2 border-b border-gray-100 font-bold block">Contact Us</Link>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setTimeout(() => {
+                    document.getElementById("how-it-works-section")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                className="text-left hover:text-black text-gray-450 transition py-2 border-b border-gray-100 cursor-pointer"
+              >
+                How it Works
+              </button>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setTimeout(() => {
+                    document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                className="text-left hover:text-black text-gray-450 transition py-2 border-b border-gray-100 cursor-pointer"
+              >
+                Features
+              </button>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setTimeout(() => {
+                    document.getElementById("showroom-section")?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                className="text-left hover:text-black text-gray-450 transition py-2 border-b border-gray-100 cursor-pointer"
+              >
+                Our Hubs
+              </button>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-left hover:text-black text-gray-450 transition py-2 border-b border-gray-100 cursor-pointer font-bold block"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-left hover:text-black text-gray-450 transition py-2 border-b border-gray-100 cursor-pointer font-bold block"
+              >
+                Contact Us
+              </Link>
             </div>
 
             <div className="flex gap-3 mt-6">
-              <a href="https://www.instagram.com/uniquerentals" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)} className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white shrink-0"><InstagramIcon size={22} /></a>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)} className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#25d366] to-[#128c7e] flex items-center justify-center text-white shrink-0 shadow-sm"><WhatsAppIcon size={22} /></a>
-              <button suppressHydrationWarning onClick={() => setIsMobileMenuOpen(false)} className="flex-1 bg-black text-white px-6 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-2"><Download size={18} /> Download App</button>
+              <a
+                href="https://www.instagram.com/uniquerentals"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm cursor-pointer shrink-0"
+                aria-label="Follow us on Instagram"
+              >
+                <InstagramIcon size={22} />
+              </a>
+              <a
+                href="https://wa.me/919876543210"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#25d366] to-[#128c7e] flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm cursor-pointer shrink-0"
+                aria-label="Contact us on WhatsApp"
+              >
+                <WhatsAppIcon size={22} />
+              </a>
+              <button suppressHydrationWarning
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex-1 bg-black text-white px-6 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-2 hover:bg-gray-800 transition shadow-sm cursor-pointer"
+              >
+                <Download size={18} /> Download App
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+
+
       {/* --- HERO SECTION --- */}
-      <section className="px-6 md:px-10 pt-6 md:pt-10 pb-12 md:pb-20 max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+
+      <section className="px-10 pt-10 pb-20 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+
         {/* Hero Text */}
-        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-6 text-left order-2 md:order-1">
-          
-          <motion.div variants={fadeUp} className="inline-flex bg-white/80 backdrop-blur-md p-1 rounded-2xl border border-gray-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
+
+        <motion.div
+
+          variants={staggerContainer}
+
+          initial="hidden"
+
+          animate="visible"
+
+          className="space-y-6"
+
+        >
+
+          {/* Hero Segmented Toggle Control */}
+          <motion.div
+            variants={fadeUp}
+            className="inline-flex bg-white/80 backdrop-blur-md p-1 rounded-2xl border border-gray-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)]"
+          >
             <button suppressHydrationWarning
-              onClick={() => { setServiceMode("self-drive"); setActiveCategory("All"); }}
-              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "self-drive" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
+              onClick={() => {
+                setServiceMode("self-drive");
+                setActiveCategory("All");
+              }}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "self-drive"
+                  ? "bg-black text-white shadow-sm scale-102"
+                  : "text-gray-400 hover:text-black"
+                }`}
             >
               🚗 Self-Drive Rental
             </button>
             <button suppressHydrationWarning
-              onClick={() => { setServiceMode("taxi"); setActiveCategory("All"); }}
-              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "taxi" ? "bg-black text-white shadow-sm scale-102" : "text-gray-400 hover:text-black"}`}
+              onClick={() => {
+                setServiceMode("taxi");
+                setActiveCategory("All");
+              }}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${serviceMode === "taxi"
+                  ? "bg-black text-white shadow-sm scale-102"
+                  : "text-gray-400 hover:text-black"
+                }`}
             >
               💼 Taxi
             </button>
@@ -698,12 +914,24 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
-              className="space-y-4"
+              className="space-y-4 text-left"
             >
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-black">
-                {serviceMode === "self-drive" ? <>Premium <br />Self-Driving <br />Rentals</> : <>Elite <br />Taxi <br />Cabs</>}
+              <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-black">
+                {serviceMode === "self-drive" ? (
+                  <>
+                    Premium <br />
+                    Self-Driving <br />
+                    Rentals
+                  </>
+                ) : (
+                  <>
+                    Elite <br />
+                    Taxi <br />
+                    Cabs
+                  </>
+                )}
               </h1>
-              <p className="text-gray-500 max-w-md text-sm sm:text-base md:text-lg leading-relaxed font-normal">
+              <p className="text-gray-500 max-w-md text-base md:text-lg leading-relaxed font-normal">
                 {serviceMode === "self-drive"
                   ? "Take control of Pune's most exclusive self-driving fleet. Enjoy absolute freedom, high-performance luxury, and door-step delivery in Maharashtra & Goa."
                   : "Sit back and travel in comfort. English-speaking professional drivers, zero security deposit, fuel and tolls fully inclusive for local or outstation road trips."}
@@ -711,104 +939,196 @@ export default function Home() {
             </motion.div>
           </AnimatePresence>
 
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-4 pt-2 justify-start">
-            <button suppressHydrationWarning onClick={() => document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" })} className="bg-black hover:bg-gray-800 text-white px-7 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 cursor-pointer shadow-md hover:shadow-lg transform active:scale-98">
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-4 pt-2 text-left justify-start">
+            <button suppressHydrationWarning
+              onClick={() => {
+                const element = document.getElementById("fleet-section");
+                element?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 cursor-pointer shadow-md hover:shadow-lg transform active:scale-98"
+            >
               {serviceMode === "self-drive" ? "Explore Self-Drive Fleet" : "Book Luxury Taxi"}
             </button>
-            <button suppressHydrationWarning onClick={() => document.getElementById("how-it-works-section")?.scrollIntoView({ behavior: "smooth" })} className="bg-white hover:bg-gray-50 text-black border border-gray-200 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 cursor-pointer shadow-sm hover:shadow-md transform active:scale-98">
+            <button suppressHydrationWarning
+              onClick={() => {
+                const element = document.getElementById("how-it-works-section");
+                element?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-white hover:bg-gray-50 text-black border border-gray-200 px-8 py-4 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 cursor-pointer shadow-sm hover:shadow-md transform active:scale-98"
+            >
               How It Works
             </button>
           </motion.div>
+
         </motion.div>
 
-        {/* --- DYNAMIC PREMIUM PRESENTATION VIEWPORT (Optimized for Mobile/Desktop Blending) --- */}
-        <div className="relative flex justify-center items-center w-full max-w-xl mx-auto md:max-w-none order-1 md:order-2 mt-4 md:mt-0 px-2 sm:px-0">
+
+
+        {/* --- VIDEO — fully blended into page --- */}
+
+        <div className="relative flex justify-center items-center overflow-visible">
+
           <motion.div
-            whileHover={{ scale: 1.02, y: -4 }}
+
+            whileHover={{ scale: 1.03, y: -6 }}
+
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-auto flex items-center justify-center overflow-visible"
+
+            className="relative w-full"
+
           >
-            {/* Ground shadow anchoring asset structure */}
-            <div className="absolute bottom-[5%] sm:bottom-0 left-1/2 -translate-x-1/2 w-[75%] h-5 bg-black/10 blur-2xl rounded-full z-0" />
-            
+
+            {/* Subtle ground shadow to anchor the car */}
+
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[60%] h-5 bg-black/15 blur-2xl rounded-full z-0" />
+
+
+
             <video
+
               autoPlay
+
               muted
-              loop
+
               playsInline
-              className="w-full h-full max-h-[260px] sm:max-h-[380px] md:max-h-none object-contain relative z-10"
+
+              className="w-full h-auto object-contain relative z-10"
+
               style={{
+                // Dissolves the light studio background into the page color
                 mixBlendMode: "multiply",
-                filter: "contrast(1.12) brightness(1.12)",
-                // Responsive safety mask ensuring zero cut lines on tiny smartphone displays
-                WebkitMaskImage: "radial-gradient(circle 98% 95% at 50% 50%, black 72%, transparent 100%)",
-                maskImage: "radial-gradient(circle 98% 95% at 50% 50%, black 72%, transparent 100%)",
+                // Boosts brightness & contrast so the light-grey background clips to pure white,
+                // making it completely transparent under multiply, leaving only the car & shadow!
+                filter: "contrast(1.15) brightness(1.12)",
+                // Fades all four edges so the video melts into the page —
+                // no hard borders, no card outline
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 90% 85% at 50% 50%, black 50%, transparent 100%)",
+                maskImage:
+                  "radial-gradient(ellipse 90% 85% at 50% 50%, black 50%, transparent 100%)",
               }}
+
             >
+
               <source src="/hero-car3.mp4" type="video/mp4" />
+
               Your browser does not support the video tag.
+
             </video>
+
           </motion.div>
+
         </div>
+
       </section>
 
+
+
       {/* --- BRAND LOGOS --- */}
+
       <motion.div
+
         variants={staggerContainer}
+
         initial="hidden"
+
         whileInView="visible"
+
         viewport={{ once: false }}
+
         className="border-t border-gray-200 flex justify-center gap-12 py-10 max-w-7xl mx-auto opacity-60 flex-wrap"
+
       >
+
         {carBrands.map((brand, i) => (
+
           <motion.div key={i} variants={fadeUp} className="text-xl font-bold text-gray-400 uppercase tracking-widest">
+
             {brand}
+
           </motion.div>
+
         ))}
+
       </motion.div>
 
       {/* --- DUAL-SERVICE FEATURE SHOWCASE ("HOW IT WORKS") --- */}
       <section id="how-it-works-section" className="py-14 px-6 md:px-10 max-w-7xl mx-auto border-t border-gray-200/50">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="text-center max-w-3xl mx-auto mb-10">
-          <motion.span variants={fadeUp} className="text-xs font-bold tracking-widest text-[#0071e3] uppercase mb-3 block">Bespoke Travel Solutions</motion.span>
-          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-black leading-tight">Two Elite Travel Modes.<br />One Premium Standard.</motion.h2>
-          <motion.p variants={fadeUp} className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto font-normal">Whether you seek the raw thrill of commanding a high-performance SUV or prefer to relax in the back of an executive cab, we have engineered the perfect journey for you.</motion.p>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false }}
+          className="text-center max-w-3xl mx-auto mb-10"
+        >
+          <motion.span variants={fadeUp} className="text-xs font-bold tracking-widest text-[#0071e3] uppercase mb-3 block">
+            Bespoke Travel Solutions
+          </motion.span>
+          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-black leading-tight">
+            Two Elite Travel Modes.<br />One Premium Standard.
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto font-normal">
+            Whether you seek the raw thrill of commanding a high-performance SUV or prefer to relax in the back of an executive cab, we have engineered the perfect journey for you.
+          </motion.p>
         </motion.div>
 
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="grid md:grid-cols-2 gap-8 mb-10">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false }}
+          className="grid md:grid-cols-2 gap-8 mb-10"
+        >
           {/* Card 1: Self-Drive Rental */}
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -6 }}
-            className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between text-left ${serviceMode === "self-drive" ? "bg-white border-[#0071e3] shadow-[0_12px_40px_rgba(0,113,227,0.06)]" : "bg-white border-gray-150/70 shadow-sm hover:border-gray-300"}`}
+            className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between ${serviceMode === "self-drive"
+                ? "bg-white border-[#0071e3] shadow-[0_12px_40px_rgba(0,113,227,0.06)] animate-pulse-subtle"
+                : "bg-white border-gray-150/70 shadow-sm hover:border-gray-300"
+              }`}
           >
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-mono">Option A</span>
-                <span className="text-xs font-semibold bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full border border-emerald-100">Full Driving Freedom</span>
+                <span className="text-xs font-semibold bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full border border-emerald-100">
+                  Full Driving Freedom
+                </span>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-black flex items-center gap-2">🚗 Self-Drive Rental</h3>
-                <p className="text-gray-500 text-xs mt-2 leading-relaxed font-medium">Perfect for adventurers, families, and car enthusiasts who love taking full control of premium, meticulously detailed vehicles.</p>
+                <h3 className="text-2xl font-bold text-black flex items-center gap-2">
+                  🚗 Self-Drive Rental
+                </h3>
+                <p className="text-gray-500 text-xs mt-2 leading-relaxed font-medium">
+                  Perfect for adventurers, families, and car enthusiasts who love taking full control of premium, meticulously detailed vehicles.
+                </p>
               </div>
 
               <div className="space-y-4 pt-2">
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><Sparkles size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <Sparkles size={14} />
+                  </div>
                   <div className="text-xs">
-                    <h4 className="font-bold text-black">Command Vetted Legends</h4>
+                    <h4 className="font-bold text-black">Drive Vetted Legends</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">Command the Mahindra Thar, Fortuner 4x4, or Nexon EV at your own terms.</p>
                   </div>
                 </div>
+
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><ShieldCheck size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <ShieldCheck size={14} />
+                  </div>
                   <div className="text-xs">
                     <h4 className="font-bold text-black">Fully Refundable Security Deposit</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">Deposit held via pre-authorization, released immediately upon post-rental check.</p>
                   </div>
                 </div>
+
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><MapPin size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <MapPin size={14} />
+                  </div>
                   <div className="text-xs">
                     <h4 className="font-bold text-black">Interstate Freedom (MH & GA)</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">Explore Goa beaches, Lonavala hills, or Mumbai expressways with pre-cleared permits.</p>
@@ -816,42 +1136,71 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <button suppressHydrationWarning onClick={() => { setServiceMode("self-drive"); document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" }); }} className={`w-full mt-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1 shadow-sm ${serviceMode === "self-drive" ? "bg-black text-white hover:bg-gray-800" : "bg-gray-50 hover:bg-gray-100 text-gray-700"}`}>Select Self-Drive <ArrowRight size={14} /></button>
+
+            <button suppressHydrationWarning
+              onClick={() => {
+                setServiceMode("self-drive");
+                document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className={`w-full mt-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1 shadow-sm ${serviceMode === "self-drive"
+                  ? "bg-black text-white hover:bg-gray-800"
+                  : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+            >
+              Select Self-Drive <ArrowRight size={14} />
+            </button>
           </motion.div>
 
           {/* Card 2: Taxi */}
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -6 }}
-            className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between text-left ${serviceMode === "taxi" ? "bg-white border-[#0071e3] shadow-[0_12px_40px_rgba(0,113,227,0.06)]" : "bg-white border-gray-150/70 shadow-sm hover:border-gray-300"}`}
+            className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between ${serviceMode === "taxi"
+                ? "bg-white border-[#0071e3] shadow-[0_12px_40px_rgba(0,113,227,0.06)] animate-pulse-subtle"
+                : "bg-white border-gray-150/70 shadow-sm hover:border-gray-300"
+              }`}
           >
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-mono">Option B</span>
-                <span className="text-xs font-semibold bg-blue-50 text-[#0071e3] px-3 py-1 rounded-full border border-blue-100">Zero Financial Liability</span>
+                <span className="text-xs font-semibold bg-blue-50 text-[#0071e3] px-3 py-1 rounded-full border border-blue-100">
+                  Zero Financial Liability
+                </span>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-black flex items-center gap-2">💼 Taxi</h3>
-                <p className="text-gray-500 text-xs mt-2 leading-relaxed font-medium">Ideal for business travelers, airport logistics, and outstation family trips where safety, comfort, and zero liability are paramount.</p>
+                <h3 className="text-2xl font-bold text-black flex items-center gap-2">
+                  💼 Taxi
+                </h3>
+                <p className="text-gray-500 text-xs mt-2 leading-relaxed font-medium">
+                  Ideal for business travelers, airport logistics, and outstation family trips where safety, comfort, and zero liability are paramount.
+                </p>
               </div>
 
               <div className="space-y-4 pt-2">
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><Briefcase size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <Briefcase size={14} />
+                  </div>
                   <div className="text-xs">
                     <h4 className="font-bold text-black">Professional Uniformed Drivers</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">English-speaking, background-verified local experts with perfect driving history.</p>
                   </div>
                 </div>
+
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><Shield size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <Shield size={14} />
+                  </div>
                   <div className="text-xs">
                     <h4 className="font-bold text-black">Waived Security Deposit (₹0)</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">No cards blocked, no cash held. Absolute peace of mind as our driver operates the vehicle.</p>
                   </div>
                 </div>
+
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100"><Clock size={14} /></div>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-black shrink-0 border border-gray-100">
+                    <Clock size={14} />
+                  </div>
                   <div className="text-xs">
                     <h4 className="font-bold text-black">Fuel & Highway Tolls Included</h4>
                     <p className="text-gray-400 font-medium leading-relaxed mt-0.5">Flat, transparent daily rate covers all fuel charges, interstate taxes, and highway tolls.</p>
@@ -859,7 +1208,19 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <button suppressHydrationWarning onClick={() => { setServiceMode("taxi"); document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" }); }} className={`w-full mt-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1 shadow-sm ${serviceMode === "taxi" ? "bg-black text-white hover:bg-gray-800" : "bg-gray-50 hover:bg-gray-100 text-gray-700"}`}>Select Taxi Mode <ArrowRight size={14} /></button>
+
+            <button suppressHydrationWarning
+              onClick={() => {
+                setServiceMode("taxi");
+                document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className={`w-full mt-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1 shadow-sm ${serviceMode === "taxi"
+                  ? "bg-black text-white hover:bg-gray-800"
+                  : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+            >
+              Select Taxi Mode <ArrowRight size={14} />
+            </button>
           </motion.div>
         </motion.div>
 
@@ -871,34 +1232,55 @@ export default function Home() {
               <h3 className="font-bold text-xl text-black mt-1">Interactive Journey Tracker</h3>
             </div>
             <div className="bg-[#f5f5f7] border border-gray-200/50 p-0.5 rounded-xl flex text-[10px] font-bold shrink-0">
-              <button suppressHydrationWarning type="button" onClick={() => setServiceMode("self-drive")} className={`px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 ${serviceMode === "self-drive" ? "bg-white text-black shadow-xs" : "text-gray-400 hover:text-black"}`}>Self-Drive Flow</button>
-              <button suppressHydrationWarning type="button" onClick={() => setServiceMode("taxi")} className={`px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 ${serviceMode === "taxi" ? "bg-white text-black shadow-xs" : "text-gray-400 hover:text-black"}`}>Taxi Flow</button>
+              <button suppressHydrationWarning
+                type="button"
+                onClick={() => setServiceMode("self-drive")}
+                className={`px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 ${serviceMode === "self-drive" ? "bg-white text-black shadow-xs" : "text-gray-400 hover:text-black"
+                  }`}
+              >
+                Self-Drive Flow
+              </button>
+              <button suppressHydrationWarning
+                type="button"
+                onClick={() => setServiceMode("taxi")}
+                className={`px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 ${serviceMode === "taxi" ? "bg-white text-black shadow-xs" : "text-gray-400 hover:text-black"
+                  }`}
+              >
+                Taxi Flow
+              </button>
             </div>
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div key={serviceMode} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.35 }} className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+            <motion.div
+              key={serviceMode}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.35 }}
+              className="grid grid-cols-1 md:grid-cols-4 gap-6 relative"
+            >
               {serviceMode === "self-drive" ? (
                 <>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">1</span>
                     <h4 className="font-bold text-sm text-black">Select Model & Dates</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Choose from hatchbacks, luxury SUVs, or convertibles and book rental dates.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Choose from hatchbacks, luxury SUVs, or convertibles and book rental dates.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">2</span>
                     <h4 className="font-bold text-sm text-black">Pay 30% Advanced</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Secure your car via our safe Razorpay integration. Pre-authorization done at delivery.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Secure your car via our safe Razorpay integration. Pre-authorization done at delivery.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">3</span>
                     <h4 className="font-bold text-sm text-black">Pre-Rental Walkthrough</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Our agent delivers the vehicle. We conduct a mutual video check for ultimate safety.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Our agent delivers the vehicle. We conduct a mutual video check for ultimate safety.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white flex items-center justify-center font-bold text-xs">4</span>
                     <h4 className="font-bold text-sm text-[#0071e3]">Take The Wheel!</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Enjoy the drive. Returns are simple, with 24/7 technical roadside support standing by.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Enjoy the drive. Returns are simple, with 24/7 technical roadside support standing by.</p>
                   </div>
                 </>
               ) : (
@@ -906,22 +1288,22 @@ export default function Home() {
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">1</span>
                     <h4 className="font-bold text-sm text-black">Specify Pickup & Route</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Choose your fleet class and enter precise local/outstation addresses.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Choose your fleet class and enter precise local/outstation addresses.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">2</span>
                     <h4 className="font-bold text-sm text-black">Advanced 30% Pre-pay</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Waive the security deposit. Secure the booking instantly with all tolls/fuel inclusive.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Waive the security deposit. Secure the booking instantly with all tolls/fuel inclusive.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">3</span>
                     <h4 className="font-bold text-sm text-black">Driver Dispatch</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Driver profiles are sent in advance. Driver arrives in professional attire 15 mins early.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Driver profiles are sent in advance. Driver arrives in professional attire 15 mins early.</p>
                   </div>
                   <div className="space-y-2">
                     <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white flex items-center justify-center font-bold text-xs">4</span>
                     <h4 className="font-bold text-sm text-[#0071e3]">Sit Back & Relax</h4>
-                    <p className="text-gray-455 text-[11px] leading-relaxed mt-1 font-medium">Charge your phone, read, or take meetings. Our driver handles navigation and safety.</p>
+                    <p className="text-gray-450 text-[11px] leading-relaxed mt-1 font-medium">Charge your phone, read, or take meetings. Our driver handles navigation and safety.</p>
                   </div>
                 </>
               )}
@@ -931,38 +1313,96 @@ export default function Home() {
       </section>
 
       {/* --- VEHICLE FLEET SECTION --- */}
+
       <section id="fleet-section" className="py-14 px-10 max-w-7xl mx-auto text-center">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="mb-8">
+
+        <motion.div
+
+          variants={staggerContainer}
+
+          initial="hidden"
+
+          whileInView="visible"
+
+          viewport={{ once: false }}
+
+          className="mb-8"
+
+        >
+
           <motion.p variants={fadeUp} className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Only The Best Cars</motion.p>
+
           <motion.h2 variants={fadeUp} className="text-5xl font-bold tracking-tight mb-6">Our Vehicle Fleet</motion.h2>
 
-          <motion.div variants={fadeUp} className="flex justify-center mb-8">
+          {/* Service Mode Selector Toggle */}
+          <motion.div
+            variants={fadeUp}
+            className="flex justify-center mb-8"
+          >
             <div className="bg-white border border-[#d2d2d7]/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] p-1 rounded-2xl flex max-w-sm w-full relative">
-              <button suppressHydrationWarning onClick={() => { setServiceMode("self-drive"); setActiveCategory("All"); }} className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition duration-300 relative z-10 cursor-pointer ${serviceMode === "self-drive" ? "text-white bg-black shadow-sm" : "text-gray-500 hover:text-black"}`}>🚗 Self-Driving Rental</button>
-              <button suppressHydrationWarning onClick={() => { setServiceMode("taxi"); setActiveCategory("All"); }} className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition duration-300 relative z-10 cursor-pointer ${serviceMode === "taxi" ? "text-white bg-black shadow-sm" : "text-gray-500 hover:text-black"}`}>💼 Taxi</button>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  setServiceMode("self-drive");
+                  setActiveCategory("All");
+                }}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition duration-300 relative z-10 cursor-pointer ${serviceMode === "self-drive" ? "text-white bg-black shadow-sm" : "text-gray-500 hover:text-black"
+                  }`}
+              >
+                🚗 Self-Driving Rental
+              </button>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  setServiceMode("taxi");
+                  setActiveCategory("All");
+                }}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition duration-300 relative z-10 cursor-pointer ${serviceMode === "taxi" ? "text-white bg-black shadow-sm" : "text-gray-500 hover:text-black"
+                  }`}
+              >
+                💼 Taxi
+              </button>
             </div>
           </motion.div>
 
+          {/* Active Filter Badge */}
           {activeCategory !== "All" && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-center mb-8"
+            >
               <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] border border-[#0071e3]/20 px-5 py-2 rounded-full text-xs font-semibold shadow-xs">
-                <span className="flex items-center gap-1">🔍 Active Filter: <strong className="text-black font-bold">{activeCategory}</strong></span>
-                <button suppressHydrationWarning onClick={() => setActiveCategory("All")} className="hover:text-red-500 transition-colors ml-2 cursor-pointer font-bold bg-white/60 hover:bg-white w-5 h-5 rounded-full flex items-center justify-center border border-gray-200/50 shadow-xs" title="Clear Filter">✕</button>
+                <span className="flex items-center gap-1">
+                  🔍 Active Filter: <strong className="text-black font-bold">{activeCategory}</strong>
+                </span>
+                <button suppressHydrationWarning
+                  onClick={() => setActiveCategory("All")}
+                  className="hover:text-red-500 transition-colors ml-2 cursor-pointer font-bold bg-white/60 hover:bg-white w-5 h-5 rounded-full flex items-center justify-center border border-gray-200/50 shadow-xs"
+                  title="Clear Filter"
+                >
+                  ✕
+                </button>
               </div>
             </motion.div>
           )}
+
         </motion.div>
 
         <div className="overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-10 px-10">
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="flex gap-6 w-max">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false }}
+            className="flex gap-6 w-max"
+          >
             {(activeCategory === "All"
               ? fleetCarsData.filter(car => {
-                  if (serviceMode === "self-drive") {
-                    return car.serviceType?.includes("Self Drive Cars") || car.serviceType?.includes("Luxury Self Drive Cars");
-                  } else {
-                    return car.serviceType?.some(type => type !== "Self Drive Cars" && type !== "Luxury Self Drive Cars");
-                  }
-                })
+                if (serviceMode === "self-drive") {
+                  return car.serviceType?.includes("Self Drive Cars") || car.serviceType?.includes("Luxury Self Drive Cars");
+                } else {
+                  return car.serviceType?.some(type => type !== "Self Drive Cars" && type !== "Luxury Self Drive Cars");
+                }
+              })
               : fleetCarsData.filter(car => car.serviceType?.includes(activeCategory))
             ).map((car) => (
               <motion.div
@@ -986,22 +1426,33 @@ export default function Home() {
                 }}
                 className="snap-start snap-always flex-none w-[85vw] md:w-[45vw] lg:w-[calc(25%-18px)] bg-white rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-gray-100 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition duration-300 flex flex-col justify-between cursor-pointer group"
               >
-                <div className="space-y-4">
+                <div className="space-y-4 animate-fadeIn">
                   <div className="w-full h-48 rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center">
-                    <img src={car.images[0]} alt={car.name} className="w-full h-full object-cover transform group-hover:scale-105 transition duration duration-500" />
+                    <img
+                      src={car.images[0]}
+                      alt={car.name}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
+                    />
                   </div>
-                  <div className="flex justify-between items-start text-left">
+
+                  <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold text-black text-base group-hover:text-[#0071e3] transition">{car.name}</h3>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">{car.category}</span>
                         <span className="w-1 h-1 rounded-full bg-gray-300" />
-                        <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">⚡ {car.specs.mileage}</span>
+                        <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+                          ⚡ {car.specs.mileage}
+                        </span>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-sm font-bold text-black">₹{(serviceMode === "taxi" ? car.price + 1500 : car.price).toLocaleString("en-IN")}</span>
-                      <span className="text-[10px] text-gray-400 block font-medium">/ day {serviceMode === "taxi" && "(with Driver)"}</span>
+                      <span className="text-sm font-bold text-black">
+                        ₹{(serviceMode === "taxi" ? car.price + 1500 : car.price).toLocaleString("en-IN")}
+                      </span>
+                      <span className="text-[10px] text-gray-400 block font-medium">
+                        / day {serviceMode === "taxi" && "(with Driver)"}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1011,6 +1462,19 @@ export default function Home() {
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedCar(car);
+                      if (car.serviceType && car.serviceType.length > 0) {
+                        const getServiceMode = (category: string): "self-drive" | "taxi" => {
+                          if (category === "Airport Transfer Cars" || category === "Corporate Car" || category === "Luxury Wedding Cars" || category === "Tempo Traveller Cars" || category === "Taxi Rentals") {
+                            return "taxi";
+                          }
+                          return "self-drive";
+                        };
+                        if (activeCategory === "All" || !car.serviceType.includes(activeCategory)) {
+                          const defaultCat = car.serviceType.includes("Self Drive Cars") ? "Self Drive Cars" : car.serviceType[0];
+                          setActiveCategory(defaultCat);
+                          setServiceMode(getServiceMode(defaultCat));
+                        }
+                      }
                     }}
                     className="w-full bg-black hover:bg-gray-800 text-white py-2.5 rounded-2xl text-[11px] font-semibold tracking-wider uppercase transition cursor-pointer flex items-center justify-center shadow-sm"
                   >
@@ -1019,7 +1483,7 @@ export default function Home() {
                   <button suppressHydrationWarning
                     onClick={(e) => {
                       e.stopPropagation();
-                      const phone = "919876543210";
+                      const phone = "919999999999";
                       const text = encodeURIComponent(`Hi Unique Rentals! I would love to ask about availability and booking details for the ${car.name} (${car.category}) at ₹${car.price.toLocaleString("en-IN")}/day.`);
                       window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
                     }}
@@ -1033,47 +1497,111 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <Link href="/cars" className="mt-10 text-black font-semibold flex items-center justify-center gap-2 mx-auto hover:underline cursor-pointer text-sm w-fit">Show All Cars <ChevronRight size={16} /></Link>
+
+
+        <Link
+          href="/cars"
+          className="mt-10 text-black font-semibold flex items-center justify-center gap-2 mx-auto hover:underline cursor-pointer text-sm w-fit"
+        >
+          Show All Cars
+          <ChevronRight size={16} />
+        </Link>
+
       </section>
 
+
       {/* --- KEY FEATURES SECTION --- */}
+
       <section id="features-section" className="py-10 md:py-14 px-6 md:px-10 max-w-7xl mx-auto">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="mb-8 max-w-md text-left">
+
+        <motion.div
+
+          variants={staggerContainer}
+
+          initial="hidden"
+
+          whileInView="visible"
+
+          viewport={{ once: false }}
+
+          className="mb-8 max-w-md"
+
+        >
+
           <motion.p variants={fadeUp} className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-2">Taking Care of Every Client</motion.p>
+
           <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-bold tracking-tight mb-3">Key Features</motion.h2>
+
           <motion.p variants={fadeUp} className="text-sm text-gray-500">We are all about our client's comfort and safety. That's why we provide the best service you can imagine.</motion.p>
+
         </motion.div>
 
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+
+
+        <motion.div
+
+          variants={staggerContainer}
+
+          initial="hidden"
+
+          whileInView="visible"
+
+          viewport={{ once: false }}
+
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6"
+
+        >
+
           {features.map((feature, i) => {
+
             const Icon = feature.icon;
+
             return (
-              <motion.div key={i} variants={fadeUp} className="bg-white p-4 md:p-6 rounded-2xl border border-gray-150/40 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition duration-300 flex flex-col justify-between min-h-[170px] md:min-h-[220px] text-left group">
+
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="bg-white p-4 md:p-6 rounded-2xl border border-gray-150/40 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition duration-300 flex flex-col justify-between min-h-[170px] md:min-h-[220px] text-left group"
+              >
                 <div className="w-9 h-9 md:w-11 md:h-11 bg-gray-50 group-hover:bg-[#0071e3]/10 group-hover:text-[#0071e3] rounded-full flex items-center justify-center text-black transition duration-300">
                   <Icon size={16} className="md:hidden" />
                   <Icon size={20} className="hidden md:block" />
                 </div>
                 <div className="mt-4 flex-grow">
                   <h3 className="text-xs md:text-sm lg:text-base font-bold leading-tight text-black mb-1 md:mb-2">{feature.title}</h3>
-                  <p className="text-gray-455 text-[10px] md:text-[11px] leading-normal md:leading-relaxed font-medium">{feature.description}</p>
+                  <p className="text-gray-450 text-[10px] md:text-[11px] leading-normal md:leading-relaxed font-medium">{feature.description}</p>
                 </div>
               </motion.div>
+
             );
+
           })}
+
         </motion.div>
+
       </section>
 
       {/* --- CUSTOMER REVIEWS SECTION --- */}
       <section className="py-14 px-10 max-w-7xl mx-auto border-t border-gray-200/50">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6 text-left">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false }}
+          className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+        >
           <div className="max-w-lg">
             <motion.p variants={fadeUp} className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">What Our Clients Say</motion.p>
             <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Customer Reviews</motion.h2>
-            <motion.p variants={fadeUp} className="text-gray-500 text-sm leading-relaxed">Trusted by thousands of happy customers across Pune. Here's what they have to say about their experience with Unique Rentals.</motion.p>
+            <motion.p variants={fadeUp} className="text-gray-500 text-sm leading-relaxed">
+              Trusted by thousands of happy customers across Pune. Here's what they have to say about their experience with Unique Rentals.
+            </motion.p>
           </div>
           <motion.div variants={fadeUp} className="flex items-center gap-3 shrink-0">
             <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => <Star key={i} size={18} className="fill-amber-400 text-amber-400" />)}
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={18} className="fill-amber-400 text-amber-400" />
+              ))}
             </div>
             <div>
               <span className="text-2xl font-bold text-black">4.9</span>
@@ -1085,44 +1613,160 @@ export default function Home() {
 
         {(() => {
           const customerReviews = [
-            { name: "Rahul Sharma", avatar: "RS", role: "Business Executive", rating: 5, date: "2 weeks ago", review: "Absolutely fantastic service! Rented a Toyota Innova Crysta for a week-long business trip. The car was in pristine condition, fully sanitized, and delivered right to my doorstep.", car: "Toyota Innova Crysta", tripType: "Business Trip", gradient: "from-blue-500 to-indigo-600" },
-            { name: "Priya Deshmukh", avatar: "PD", role: "Software Engineer", rating: 5, date: "1 month ago", review: "Best self-drive rental experience in Pune! Picked up a Hyundai Creta and it was spotless. Their 24/7 roadside assistance gave me complete peace of mind.", car: "Hyundai Creta", tripType: "Weekend Getaway", gradient: "from-violet-500 to-purple-600" },
-            { name: "Amit Kulkarni", avatar: "AK", role: "Entrepreneur", rating: 5, date: "3 weeks ago", review: "Used their airport transfer service — the driver arrived 15 minutes early, car was immaculate, and the ride was smooth. Most professional rental hub in Pune.", car: "Maruti Ciaz", tripType: "Airport Transfer", gradient: "from-emerald-500 to-teal-600" },
-            { name: "Sneha Patil", avatar: "SP", role: "Wedding Planner", rating: 5, date: "1 month ago", review: "Booked their luxury wedding cars for a client's big day and they exceeded expectations. beautifully styled, punctual, and elite concierge support.", car: "Toyota Fortuner", tripType: "Wedding Event", gradient: "from-rose-500 to-pink-600" },
-            { name: "Vikram Joshi", avatar: "VJ", role: "Travel Blogger", rating: 4, date: "2 months ago", review: "Fleet is exceptionally well-maintained, clear transparent billing with zero surprises. Outstation operations to Goa are absolutely premium.", car: "Mahindra Thar", tripType: "Road Trip", gradient: "from-amber-500 to-orange-600" },
-            { name: "Deepa Nair", avatar: "DN", role: "Doctor", rating: 5, date: "3 weeks ago", review: "Urgent medical conference travel response was handled brilliantly within 2 hours. The car was clean, fast, and mechanical conditions were perfect.", car: "Maruti Swift", tripType: "Conference Travel", gradient: "from-cyan-500 to-blue-600" }
+            {
+              name: "Rahul Sharma",
+              avatar: "RS",
+              role: "Business Executive",
+              rating: 5,
+              date: "2 weeks ago",
+              review: "Absolutely fantastic service! Rented a Toyota Innova Crysta for a week-long business trip. The car was in pristine condition, fully sanitized, and delivered right to my doorstep. The entire booking process was seamless.",
+              car: "Toyota Innova Crysta",
+              tripType: "Business Trip",
+              gradient: "from-blue-500 to-indigo-600"
+            },
+            {
+              name: "Priya Deshmukh",
+              avatar: "PD",
+              role: "Software Engineer",
+              rating: 5,
+              date: "1 month ago",
+              review: "Best self-drive rental experience in Pune! Picked up a Hyundai Creta and it was spotless. GPS navigation worked flawlessly. Their 24/7 roadside assistance gave me complete peace of mind during my Lonavala trip.",
+              car: "Hyundai Creta",
+              tripType: "Weekend Getaway",
+              gradient: "from-violet-500 to-purple-600"
+            },
+            {
+              name: "Amit Kulkarni",
+              avatar: "AK",
+              role: "Entrepreneur",
+              rating: 5,
+              date: "3 weeks ago",
+              review: "Used their airport transfer service — the driver arrived 15 minutes early, car was immaculate, and the entire ride was incredibly smooth. This is easily the most professional car rental service in Pune.",
+              car: "Maruti Ciaz",
+              tripType: "Airport Transfer",
+              gradient: "from-emerald-500 to-teal-600"
+            },
+            {
+              name: "Sneha Patil",
+              avatar: "SP",
+              role: "Wedding Planner",
+              rating: 5,
+              date: "1 month ago",
+              review: "Booked their luxury wedding cars for a client's big day and they exceeded every expectation. The cars were decorated beautifully, drivers were courteous and punctual. Highly recommend for wedding events!",
+              car: "Toyota Fortuner",
+              tripType: "Wedding Event",
+              gradient: "from-rose-500 to-pink-600"
+            },
+            {
+              name: "Vikram Joshi",
+              avatar: "VJ",
+              role: "Travel Blogger",
+              rating: 4,
+              date: "2 months ago",
+              review: "I've rented from many services across India, and Unique Rentals stands out. Their fleet is well-maintained, pricing is transparent with no hidden charges, and the customer support team is incredibly responsive.",
+              car: "Mahindra Thar",
+              tripType: "Road Trip",
+              gradient: "from-amber-500 to-orange-600"
+            },
+            {
+              name: "Deepa Nair",
+              avatar: "DN",
+              role: "Doctor",
+              rating: 5,
+              date: "3 weeks ago",
+              review: "Reliable and professional! Needed a car urgently for a medical conference in Mumbai. They arranged everything within 2 hours — truly remarkable service. The Maruti Swift was fuel-efficient and comfortable.",
+              car: "Maruti Swift",
+              tripType: "Conference Travel",
+              gradient: "from-cyan-500 to-blue-600"
+            }
           ];
 
           return (
             <div className="relative group/reviews">
-              <button suppressHydrationWarning onClick={() => { const el = document.getElementById('reviews-scroll'); if (el) el.scrollBy({ left: -340, behavior: 'smooth' }); }} className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full items-center justify-center shadow-lg hover:bg-black hover:text-white hover:border-black transition-all duration-300 opacity-0 group-hover/reviews:opacity-100"><ChevronLeft size={18} /></button>
-              <button suppressHydrationWarning onClick={() => { const el = document.getElementById('reviews-scroll'); if (el) el.scrollBy({ left: 340, behavior: 'smooth' }); }} className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full items-center justify-center shadow-lg hover:bg-black hover:text-white hover:border-black transition-all duration-300 opacity-0 group-hover/reviews:opacity-100"><ChevronRight size={18} /></button>
+              {/* Navigation Arrows */}
+              <button suppressHydrationWarning
+                onClick={() => {
+                  const el = document.getElementById('reviews-scroll');
+                  if (el) el.scrollBy({ left: -340, behavior: 'smooth' });
+                }}
+                className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full items-center justify-center shadow-lg hover:bg-black hover:text-white hover:border-black transition-all duration-300 opacity-0 group-hover/reviews:opacity-100"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button suppressHydrationWarning
+                onClick={() => {
+                  const el = document.getElementById('reviews-scroll');
+                  if (el) el.scrollBy({ left: 340, behavior: 'smooth' });
+                }}
+                className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full items-center justify-center shadow-lg hover:bg-black hover:text-white hover:border-black transition-all duration-300 opacity-0 group-hover/reviews:opacity-100"
+              >
+                <ChevronRight size={18} />
+              </button>
 
               <div id="reviews-scroll" className="overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-10 px-10">
-                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="flex gap-6 w-max">
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false }}
+                  className="flex gap-6 w-max"
+                >
                   {customerReviews.map((review, index) => (
-                    <motion.div key={index} variants={fadeUp} className="snap-start snap-always flex-none w-[85vw] md:w-[380px] bg-white rounded-3xl p-7 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)] transition-all duration-500 flex flex-col justify-between min-h-[320px] group/card relative overflow-hidden text-left">
-                      <div className="absolute top-5 right-5 opacity-[0.04] group-hover/card:opacity-[0.08] transition-opacity duration-500"><Quote size={80} /></div>
+                    <motion.div
+                      key={index}
+                      variants={fadeUp}
+                      className="snap-start snap-always flex-none w-[85vw] md:w-[380px] bg-white rounded-3xl p-7 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)] transition-all duration-500 flex flex-col justify-between min-h-[320px] group/card relative overflow-hidden"
+                    >
+                      {/* Decorative quote */}
+                      <div className="absolute top-5 right-5 opacity-[0.04] group-hover/card:opacity-[0.08] transition-opacity duration-500">
+                        <Quote size={80} />
+                      </div>
+
                       <div className="space-y-5 relative z-10">
+                        {/* Header: Avatar + Info */}
                         <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${review.gradient} flex items-center justify-center text-white font-bold text-sm shadow-lg`}>{review.avatar}</div>
+                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${review.gradient} flex items-center justify-center text-white font-bold text-sm shadow-lg`}>
+                            {review.avatar}
+                          </div>
                           <div className="flex-grow">
                             <h4 className="font-bold text-sm text-black">{review.name}</h4>
                             <p className="text-[11px] text-gray-400 font-medium">{review.role}</p>
                           </div>
                           <div className="text-right">
-                            <div className="flex items-center gap-0.5">{[...Array(5)].map((_, i) => <Star key={i} size={12} className={i < review.rating ? "fill-amber-400 text-amber-400" : "text-gray-200"} />)}</div>
+                            <div className="flex items-center gap-0.5">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  size={12}
+                                  className={i < review.rating ? "fill-amber-400 text-amber-400" : "text-gray-200"}
+                                />
+                              ))}
+                            </div>
                             <span className="text-[10px] text-gray-300 font-medium mt-0.5 block">{review.date}</span>
                           </div>
                         </div>
-                        <p className="text-[13px] text-gray-600 leading-relaxed font-medium">"{review.review}"</p>
+
+                        {/* Review Text */}
+                        <p className="text-[13px] text-gray-600 leading-relaxed font-medium">
+                          "{review.review}"
+                        </p>
+
+                        {/* Tags */}
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full">🚗 {review.car}</span>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-1 rounded-full">{review.tripType}</span>
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full">
+                            🚗 {review.car}
+                          </span>
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-1 rounded-full">
+                            {review.tripType}
+                          </span>
                         </div>
                       </div>
+
+                      {/* Verified badge */}
                       <div className="flex items-center gap-1.5 mt-5 pt-4 border-t border-gray-50">
-                        <div className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center"><Check size={10} className="text-white" /></div>
+                        <div className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                          <Check size={10} className="text-white" />
+                        </div>
                         <span className="text-[10px] text-gray-400 font-semibold">Verified Customer</span>
                       </div>
                     </motion.div>
@@ -1134,14 +1778,22 @@ export default function Home() {
         })()}
 
         {/* Google Reviews Trust Badge */}
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false }} className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 bg-gradient-to-r from-gray-50 to-white p-6 rounded-3xl border border-gray-100">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false }}
+          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 bg-gradient-to-r from-gray-50 to-white p-6 rounded-3xl border border-gray-100"
+        >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center">
               <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" /><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" /><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" /><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" /></svg>
             </div>
             <div>
               <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => <Star key={i} size={14} className="fill-amber-400 text-amber-400" />)}
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
+                ))}
                 <span className="text-sm font-bold text-black ml-1">4.9</span>
               </div>
               <p className="text-[10px] text-gray-400 font-medium">Google Reviews Rating</p>
@@ -1166,95 +1818,227 @@ export default function Home() {
       </section>
 
       {/* --- SHOWROOMS & MAP SECTION --- */}
-      <section id="showroom-section" className="py-14 px-10 max-w-7xl mx-auto border-t border-gray-200/50">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false }} className="grid lg:grid-cols-5 gap-8 items-center text-left">
-          <div className="lg:col-span-2 space-y-5">
+      <section className="py-14 px-10 max-w-7xl mx-auto border-t border-gray-200/50">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false }}
+          className="grid lg:grid-cols-5 gap-8 items-center"
+        >
+          {/* Left Panel: Location cards (2 columns on desktop) */}
+          <div className="lg:col-span-2 space-y-5 text-left">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Our Presence</span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-black mt-2 leading-tight">We are available at</h2>
-              <p className="text-gray-500 text-xs mt-2 leading-relaxed">Experience high-performance client logistics directly at our flagship hubs in Shivajinagar and premium airport delivery zones.</p>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-black mt-2 leading-tight">
+                We are available at
+              </h2>
+              <p className="text-gray-500 text-xs mt-2 leading-relaxed">
+                Experience high-performance client logistics directly at our flagship hubs in Shivajinagar and premium airport delivery zones.
+              </p>
             </div>
 
             <div className="space-y-3">
               <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-md transition">
                 <span className="text-[9px] font-bold uppercase text-[#0071e3] tracking-widest font-mono">Flagship Hub</span>
                 <h4 className="font-bold text-sm text-black mt-1">Senapati Bapat Road, Pune</h4>
-                <p className="text-gray-450 text-[11px] mt-1 leading-relaxed">Shivajinagar, Pune, MH 411016 <br />Open Daily: 9:00 AM — 9:00 PM</p>
+                <p className="text-gray-450 text-[11px] mt-1 leading-relaxed">
+                  Shivajinagar, Pune, MH 411016
+                  <br />
+                  Open Daily: 9:00 AM — 9:00 PM
+                </p>
               </div>
+
               <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-md transition">
                 <span className="text-[9px] font-bold uppercase text-[#0071e3] tracking-widest font-mono">Airport VIP Hub</span>
                 <h4 className="font-bold text-sm text-black mt-1">Pune International Airport (PNQ)</h4>
-                <p className="text-gray-450 text-[11px] mt-1 leading-relaxed">Lohegaon, Pune, MH 411032 <br />24/7 Flight Valet & Drop-Off</p>
+                <p className="text-gray-450 text-[11px] mt-1 leading-relaxed">
+                  Lohegaon, Pune, MH 411032
+                  <br />
+                  24/7 Flight Valet & Drop-Off
+                </p>
               </div>
             </div>
           </div>
 
-          <motion.div variants={scaleIn} className="lg:col-span-3 w-full h-[220px] md:h-[350px] lg:h-[420px] rounded-3xl border border-[#d2d2d7]/50 shadow-sm overflow-hidden relative bg-gray-100">
-            <iframe title="Unique Rentals Pune Showroom" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1891.5649989823485!2d73.8291437!3d18.5308225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf7ab349f257%3A0x2860d5d1c2dc5a79!2sSenapati%20Bapat%20Rd%2C%20Pune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="w-full h-full filter grayscale-[10%] contrast-[95%] opacity-90 hover:grayscale-0 hover:opacity-100 transition duration-500" />
+          {/* Right Panel: Clean Framed Google Maps (3 columns on desktop) */}
+          <motion.div
+            variants={scaleIn}
+            className="lg:col-span-3 w-full h-[220px] md:h-[350px] lg:h-[420px] rounded-3xl border border-[#d2d2d7]/50 shadow-sm overflow-hidden relative bg-gray-100"
+          >
+            <iframe
+              title="Unique Rentals Pune Showroom"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1891.5649989823485!2d73.8291437!3d18.5308225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf7ab349f257%3A0x2860d5d1c2dc5a79!2sSenapati%20Bapat%20Rd%2C%20Pune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full filter grayscale-[10%] contrast-[95%] opacity-90 hover:grayscale-0 hover:opacity-100 transition duration-500"
+            />
           </motion.div>
         </motion.div>
       </section>
 
       {/* --- CTA & FOOTER --- */}
-      <section className="px-6 md:px-10 pb-8 max-w-7xl mx-auto text-left">
-        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="flex flex-col md:flex-row items-center justify-between gap-6 py-10 border-t border-gray-200/60">
+
+      <section className="px-6 md:px-10 pb-8 max-w-7xl mx-auto">
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row items-center justify-between gap-6 py-10 border-t border-gray-200/60"
+        >
           <div>
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">Ready to drive?</h2>
             <p className="text-sm text-gray-500 mt-1">Premium fleet. Doorstep delivery. Zero hassle.</p>
           </div>
-          <button suppressHydrationWarning onClick={() => document.getElementById("fleet-section")?.scrollIntoView({ behavior: "smooth" })} className="bg-black hover:bg-gray-800 text-white px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md group/btn flex-shrink-0">
-            Explore Fleet <ArrowRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform duration-300" />
+          <button suppressHydrationWarning
+            onClick={() => {
+              const element = document.getElementById("fleet-section");
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="bg-black hover:bg-gray-800 text-white px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md group/btn flex-shrink-0"
+          >
+            Explore Fleet
+            <ArrowRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform duration-300" />
           </button>
         </motion.div>
 
         <footer className="mt-20 flex flex-col md:flex-row justify-between items-start md:items-center border-t border-gray-200 pt-10">
+
           <div className="flex gap-8 text-sm text-gray-500 font-medium mb-8 md:mb-0 flex-wrap">
+
             <Link href="/about" className="hover:text-black">About Us</Link>
+
             <Link href="/cars" className="hover:text-black">Cars</Link>
+
             <Link href="/#features-section" className="hover:text-black">Features</Link>
+
             <Link href="/contact" className="hover:text-black">Contact Us</Link>
+
           </div>
 
+
+
           <div className="w-full md:w-auto">
+
             <p className="text-sm font-bold mb-3">Subscribe to News</p>
+
             <div className="flex items-center border-b border-gray-300 pb-2">
-              <input suppressHydrationWarning type="email" placeholder="Your e-mail" className="bg-transparent outline-none flex-grow text-sm" />
-              <button suppressHydrationWarning aria-label="Subscribe"><ChevronRight size={18} className="text-gray-400 hover:text-black transition" /></button>
+
+              <input suppressHydrationWarning
+
+                type="email"
+
+                placeholder="Your e-mail"
+
+                className="bg-transparent outline-none flex-grow text-sm"
+
+              />
+
+              <button suppressHydrationWarning aria-label="Subscribe">
+
+                <ChevronRight size={18} className="text-gray-400 hover:text-black transition" />
+
+              </button>
+
             </div>
+
           </div>
+
         </footer>
+
       </section>
 
       {/* --- DIRECT BOOKING MODAL --- */}
       <AnimatePresence>
         {selectedCar && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={resetBookingForm} className="absolute inset-0 bg-[#1d1d1f]/40 backdrop-blur-md" />
-            
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 25 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 25 }} transition={{ type: "spring", stiffness: 350, damping: 28 }} className="bg-[#ffffff] border border-[#d2d2d7]/50 rounded-[32px] shadow-[0_12px_50px_rgba(0,0,0,0.15)] overflow-hidden w-full max-w-4xl relative z-10 max-h-[90vh] flex flex-col font-sans">
-              <button suppressHydrationWarning onClick={resetBookingForm} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-gray-500 hover:text-black z-20 cursor-pointer" title="Close"><X size={16} /></button>
+
+            {/* Dark glass backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={resetBookingForm}
+              className="absolute inset-0 bg-[#1d1d1f]/40 backdrop-blur-md"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 25 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 25 }}
+              transition={{ type: "spring", stiffness: 350, damping: 28 }}
+              className="bg-[#ffffff] border border-[#d2d2d7]/50 rounded-[32px] shadow-[0_12px_50px_rgba(0,0,0,0.15)] overflow-hidden w-full max-w-4xl relative z-10 max-h-[90vh] flex flex-col font-sans"
+            >
+
+              {/* Close Button */}
+              <button suppressHydrationWarning
+                onClick={resetBookingForm}
+                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-gray-500 hover:text-black z-20 cursor-pointer"
+                title="Close"
+              >
+                <X size={16} />
+              </button>
 
               <AnimatePresence mode="wait">
                 {!showSuccess ? (
                   !isPaying ? (
-                    <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="overflow-y-auto p-8 md:p-10 flex flex-col">
+                    <motion.div
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="overflow-y-auto p-8 md:p-10 flex flex-col"
+                    >
+                      {/* Header */}
                       <div className="mb-6 select-none text-left border-b border-[#d2d2d7]/20 pb-4">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Direct Reservation & Specifications</span>
                         <h3 className="text-2xl font-bold tracking-tight text-black mt-1">Bespoke Vehicle Configuration</h3>
                         <p className="text-xs text-gray-500 mt-1">Review specifications and complete your reservation instantly.</p>
                       </div>
 
+                      {/* Content Columns */}
                       <div className="grid md:grid-cols-2 gap-8 items-start">
+
+                        {/* Left: Premium Car Details Block */}
                         <div className="space-y-5 text-left border-r border-[#d2d2d7]/20 pr-0 md:pr-8 flex flex-col justify-between self-stretch">
                           <div className="space-y-4">
                             <div className="w-full relative shrink-0">
                               <div className="w-full h-40 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center relative group">
-                                <img src={selectedCar.images[activeImageIndex]} alt={selectedCar.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102" />
-                                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white font-bold tracking-wider text-[9px] uppercase px-2.5 py-1 rounded-full">{selectedCar.category}</div>
+                                <img
+                                  src={selectedCar.images[activeImageIndex]}
+                                  alt={selectedCar.name}
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                                />
+                                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white font-bold tracking-wider text-[9px] uppercase px-2.5 py-1 rounded-full">
+                                  {selectedCar.category}
+                                </div>
                               </div>
+
+                              {/* Premium Thumbnails Gallery Selector */}
                               <div className="flex gap-2 mt-2 shrink-0 overflow-x-auto py-1 scrollbar-none justify-start">
                                 {selectedCar.images.map((img, idx) => (
-                                  <button suppressHydrationWarning key={idx} type="button" onClick={() => setActiveImageIndex(idx)} className={`w-14 h-10 rounded-lg overflow-hidden border transition transform active:scale-95 shrink-0 cursor-pointer ${activeImageIndex === idx ? "ring-2 ring-[#0071e3] ring-offset-2 ring-offset-white border-transparent scale-102" : "border-gray-200 hover:border-gray-400"}`}><img src={img} alt={`${selectedCar.name} angle ${idx + 1}`} className="w-full h-full object-cover" /></button>
+                                  <button suppressHydrationWarning
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => setActiveImageIndex(idx)}
+                                    className={`w-14 h-10 rounded-lg overflow-hidden border transition transform active:scale-95 shrink-0 cursor-pointer ${activeImageIndex === idx
+                                        ? "ring-2 ring-[#0071e3] ring-offset-2 ring-offset-white border-transparent scale-102"
+                                        : "border-gray-200 hover:border-gray-400"
+                                      }`}
+                                  >
+                                    <img
+                                      src={img}
+                                      alt={`${selectedCar.name} angle ${idx + 1}`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -1262,39 +2046,92 @@ export default function Home() {
                             <div>
                               <h4 className="font-bold text-xl tracking-tight text-black">{selectedCar.name}</h4>
                               <div className="flex items-center gap-2 mt-1">
-                                <span className="font-bold text-base text-[#0071e3]">₹{(serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price).toLocaleString("en-IN")}</span>
+                                <span className="font-bold text-base text-[#0071e3]">
+                                  ₹{(serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price).toLocaleString("en-IN")}
+                                </span>
                                 <span className="text-[11px] text-gray-500 font-medium">/ day ({serviceMode === "taxi" ? "with Driver" : "Self-Drive"})</span>
                               </div>
                             </div>
 
+                            {/* Elegant Interactive Tab Switcher */}
                             <div className="flex bg-[#f5f5f7] p-1 rounded-xl border border-gray-200/50 text-[11px] font-semibold text-gray-500 shrink-0">
-                              <button suppressHydrationWarning type="button" onClick={() => setActiveModalTab("overview")} className={`flex-1 py-1.5 rounded-lg transition duration-200 ${activeModalTab === "overview" ? "bg-white text-black shadow-sm" : "hover:text-black cursor-pointer"}`}>Overview & Specs</button>
-                              <button suppressHydrationWarning type="button" onClick={() => setActiveModalTab("policies")} className={`flex-1 py-1.5 rounded-lg transition duration-200 ${activeModalTab === "policies" ? "bg-white text-black shadow-sm" : "hover:text-black cursor-pointer"}`}>Policies & Terms</button>
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setActiveModalTab("overview")}
+                                className={`flex-1 py-1.5 rounded-lg transition duration-200 ${activeModalTab === "overview"
+                                    ? "bg-white text-black shadow-sm"
+                                    : "hover:text-black cursor-pointer"
+                                  }`}
+                              >
+                                Overview & Specs
+                              </button>
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setActiveModalTab("policies")}
+                                className={`flex-1 py-1.5 rounded-lg transition duration-200 ${activeModalTab === "policies"
+                                    ? "bg-white text-black shadow-sm"
+                                    : "hover:text-black cursor-pointer"
+                                  }`}
+                              >
+                                Policies & Terms
+                              </button>
                             </div>
 
+                            {/* Tab Content 1: Overview & Specs */}
                             {activeModalTab === "overview" && (
-                              <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                              <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="space-y-4"
+                              >
+                                {/* Overview text */}
                                 <div className="space-y-1">
                                   <h5 className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Car Overview</h5>
-                                  <p className="text-[11px] text-gray-600 leading-relaxed font-semibold">{selectedCar.overview}</p>
+                                  <p className="text-[11px] text-gray-600 leading-relaxed font-semibold">
+                                    {selectedCar.overview}
+                                  </p>
                                 </div>
+
+                                {/* Specs Grid */}
                                 <div className="space-y-2">
                                   <h5 className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Technical Specifications</h5>
                                   <div className="grid grid-cols-2 gap-2 text-xs">
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Engine</span><span className="font-semibold text-black text-[11px]">{selectedCar.specs?.engine}</span></div>
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Transmission</span><span className="font-semibold text-black text-[11px]">{selectedCar.specs?.transmission}</span></div>
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Power Output</span><span className="font-semibold text-black text-[11px]">{selectedCar.specs?.power}</span></div>
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Drive System</span><span className="font-semibold text-black text-[11px]">{selectedCar.specs?.drive}</span></div>
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Fuel Source</span><span className="font-semibold text-black text-[11px]">{selectedCar.specs?.fuel}</span></div>
-                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40"><span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Certified Mileage</span><span className="font-semibold text-emerald-600 text-[11px]">⚡ {selectedCar.specs?.mileage}</span></div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Engine</span>
+                                      <span className="font-semibold text-black text-[11px]">{selectedCar.specs?.engine}</span>
+                                    </div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Transmission</span>
+                                      <span className="font-semibold text-black text-[11px]">{selectedCar.specs?.transmission}</span>
+                                    </div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Power Output</span>
+                                      <span className="font-semibold text-black text-[11px]">{selectedCar.specs?.power}</span>
+                                    </div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Drive System</span>
+                                      <span className="font-semibold text-black text-[11px]">{selectedCar.specs?.drive}</span>
+                                    </div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Fuel Source</span>
+                                      <span className="font-semibold text-black text-[11px]">{selectedCar.specs?.fuel}</span>
+                                    </div>
+                                    <div className="bg-[#f5f5f7] p-2.5 rounded-xl border border-gray-150/40">
+                                      <span className="text-gray-400 block text-[9px] uppercase tracking-wider font-semibold">Certified Mileage</span>
+                                      <span className="font-semibold text-emerald-600 text-[11px]">⚡ {selectedCar.specs?.mileage}</span>
+                                    </div>
                                   </div>
                                 </div>
+
+                                {/* Included Features */}
                                 <div className="space-y-1.5">
                                   <h5 className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Premium Amenities</h5>
                                   <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                                     {selectedCar.features?.map((feat, idx) => (
                                       <div key={idx} className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-600">
-                                        <div className="w-3.5 h-3.5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200"><Check size={9} strokeWidth={3} /></div>
+                                        <div className="w-3.5 h-3.5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200">
+                                          <Check size={9} strokeWidth={3} />
+                                        </div>
                                         <span className="truncate">{feat}</span>
                                       </div>
                                     ))}
@@ -1303,124 +2140,308 @@ export default function Home() {
                               </motion.div>
                             )}
 
+                            {/* Tab Content 2: Policies, Damage & T&Cs */}
                             {activeModalTab === "policies" && (
-                              <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                              <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="space-y-4"
+                              >
+                                {/* Security Deposit Box */}
                                 <div className={`${serviceMode === "taxi" ? "bg-blue-50/50 border-blue-100" : "bg-emerald-50/50 border-emerald-100"} border rounded-xl p-3 flex items-start gap-2.5`}>
-                                  <div className={`w-5 h-5 rounded-full ${serviceMode === "taxi" ? "bg-[#0071e3]" : "bg-emerald-500"} text-white flex items-center justify-center font-bold text-[9px] shrink-0`}>₹</div>
+                                  <div className={`w-5 h-5 rounded-full ${serviceMode === "taxi" ? "bg-[#0071e3]" : "bg-emerald-500"} text-white flex items-center justify-center font-bold text-[9px] shrink-0`}>
+                                    ₹
+                                  </div>
                                   <div className="text-[11px]">
-                                    <span className={`font-bold ${serviceMode === "taxi" ? "text-blue-800" : "text-emerald-800"} block uppercase tracking-wider text-[9px]`}>{serviceMode === "taxi" ? "Zero Security Deposit Required" : "Refundable Security Deposit"}</span>
-                                    <span className={`${serviceMode === "taxi" ? "text-blue-700" : "text-emerald-700"} leading-normal font-semibold`}>{serviceMode === "taxi" ? "Since a professional driver operates the vehicle, absolutely zero security deposit or pre-authorization is required at pickup." : "We pre-authorize a standard refundable security deposit upon vehicle delivery, released instantly following post-rental check verification."}</span>
+                                    <span className={`font-bold ${serviceMode === "taxi" ? "text-blue-800" : "text-emerald-800"} block uppercase tracking-wider text-[9px]`}>
+                                      {serviceMode === "taxi" ? "Zero Security Deposit Required" : "Refundable Security Deposit"}
+                                    </span>
+                                    <span className={`${serviceMode === "taxi" ? "text-blue-700" : "text-emerald-700"} leading-normal font-semibold`}>
+                                      {serviceMode === "taxi"
+                                        ? "Since a professional driver operates the vehicle, absolutely zero security deposit or pre-authorization is required at pickup."
+                                        : "We pre-authorize a standard refundable security deposit upon vehicle delivery, released instantly following post-rental check verification."}
+                                    </span>
                                   </div>
                                 </div>
+
+                                {/* Damage & Inspection policy */}
                                 {serviceMode !== "taxi" && (
                                   <div className="bg-amber-50/50 border border-amber-100 rounded-xl p-3 flex items-start gap-2.5">
                                     <span className="text-amber-500 shrink-0 text-sm font-bold leading-none">⚠️</span>
                                     <div className="text-[11px]">
                                       <span className="font-bold text-amber-800 block uppercase tracking-wider text-[9px]">Damage & Pre-Rental Inspection</span>
-                                      <p className="text-amber-700 leading-relaxed font-semibold mt-0.5">{selectedCar.damagePolicy}</p>
+                                      <p className="text-amber-700 leading-relaxed font-semibold mt-0.5">
+                                        {selectedCar.damagePolicy}
+                                      </p>
                                     </div>
                                   </div>
                                 )}
+
+                                {/* Terms & Conditions list */}
                                 <div className="space-y-1.5">
-                                  <h5 className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{serviceMode === "taxi" ? "Highlighted Service Conditions" : "Highlighted Rental Conditions"}</h5>
+                                  <h5 className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                    {serviceMode === "taxi" ? "Highlighted Service Conditions" : "Highlighted Rental Conditions"}
+                                  </h5>
                                   <div className="space-y-1 text-[11px] font-semibold text-gray-600">
                                     {serviceMode === "taxi" ? (
                                       <>
-                                        <div className="flex items-start gap-1.5"><span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span><span className="leading-normal">Professional Driver included in pricing</span></div>
-                                        <div className="flex items-start gap-1.5"><span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span><span className="leading-normal">Standard working hours: 12 Hours / 250 km limit per day (extra hours billed at ₹150/hr)</span></div>
-                                        <div className="flex items-start gap-1.5"><span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span><span className="leading-normal">All toll taxes, state permits, and fuel allowances are included in the rate</span></div>
+                                        <div className="flex items-start gap-1.5">
+                                          <span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span>
+                                          <span className="leading-normal">Professional Driver included in pricing</span>
+                                        </div>
+                                        <div className="flex items-start gap-1.5">
+                                          <span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span>
+                                          <span className="leading-normal">Standard working hours: 12 Hours / 250 km limit per day (extra hours billed at ₹150/hr)</span>
+                                        </div>
+                                        <div className="flex items-start gap-1.5">
+                                          <span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span>
+                                          <span className="leading-normal">All toll taxes, state permits, and fuel allowances are included in the daily premium rate</span>
+                                        </div>
                                       </>
                                     ) : (
-                                      selectedCar.terms?.map((term, idx) => (<div key={idx} className="flex items-start gap-1.5"><span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span><span className="leading-normal">{term}</span></div>))
+                                      selectedCar.terms?.map((term, idx) => (
+                                        <div key={idx} className="flex items-start gap-1.5">
+                                          <span className="text-[#0071e3] shrink-0 text-xs mt-0.5">•</span>
+                                          <span className="leading-normal">{term}</span>
+                                        </div>
+                                      ))
                                     )}
                                   </div>
                                 </div>
                               </motion.div>
                             )}
                           </div>
+
+                          {/* Footer text inside detail pane */}
                           <div className="border-t border-[#d2d2d7]/20 pt-4 flex items-center justify-between text-[11px] font-semibold text-gray-400 shrink-0">
                             <span>Need customizable plans?</span>
-                            <button suppressHydrationWarning type="button" onClick={(e) => { e.stopPropagation(); const phone = "919876543210"; const text = encodeURIComponent(`Hi Support! I am looking at reserving the ${selectedCar.name} at ₹${selectedCar.price.toLocaleString("en-IN")}/day. Can you help me?`); window.open(`https://wa.me/${phone}?text=${text}`, "_blank"); }} className="text-[#0071e3] hover:underline font-bold uppercase tracking-wider text-[9px]">WhatsApp Us</button>
+                            <button suppressHydrationWarning
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const phone = "919999999999";
+                                const text = encodeURIComponent(`Hi Support! I am looking at reserving the ${selectedCar.name} at ₹${selectedCar.price.toLocaleString("en-IN")}/day. Can you help me?`);
+                                window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+                              }}
+                              className="text-[#0071e3] hover:underline font-bold uppercase tracking-wider text-[9px]"
+                            >
+                              WhatsApp Us
+                            </button>
                           </div>
                         </div>
 
+                        {/* Right: Input Checkout Form */}
                         <form onSubmit={handleBookingSubmit} className="space-y-4 text-left">
                           <div className="select-none text-left flex justify-between items-center flex-wrap gap-2">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Reservation Details</span>
+
+                            {/* Service toggle inside Modal */}
                             <div className="bg-[#f5f5f7] border border-[#d2d2d7]/40 p-0.5 rounded-xl flex text-[9px] font-bold">
-                              <button suppressHydrationWarning type="button" onClick={() => setServiceMode("self-drive")} className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${serviceMode === "self-drive" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"}`}>Self-Drive</button>
-                              <button suppressHydrationWarning type="button" onClick={() => setServiceMode("taxi")} className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${serviceMode === "taxi" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"}`}>Taxi/Driver</button>
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Pick-up</label>
-                              <input suppressHydrationWarning type="date" required value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black" />
-                            </div>
-                            <div>
-                              <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Return</label>
-                              <input suppressHydrationWarning type="date" required value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black" />
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setServiceMode("self-drive")}
+                                className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${serviceMode === "self-drive" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"
+                                  }`}
+                              >
+                                Self-Drive
+                              </button>
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setServiceMode("taxi")}
+                                className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${serviceMode === "taxi" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"
+                                  }`}
+                              >
+                                Taxi/Driver
+                              </button>
                             </div>
                           </div>
 
+                          {/* Dates grid */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Pick-up</label>
+                              <input suppressHydrationWarning
+                                type="date"
+                                required
+                                value={pickupDate}
+                                onChange={(e) => setPickupDate(e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Return</label>
+                              <input suppressHydrationWarning
+                                type="date"
+                                required
+                                value={returnDate}
+                                onChange={(e) => setReturnDate(e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Handover Options for Self-Drive Service */}
                           {serviceMode === "self-drive" && (
                             <div className="space-y-3">
                               <div>
                                 <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Handover Method</label>
                                 <div className="grid grid-cols-2 gap-2 bg-[#f5f5f7] border border-[#d2d2d7]/40 p-1 rounded-xl">
-                                  <button suppressHydrationWarning type="button" onClick={() => setHandoverType("hub")} className={`py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${handoverType === "hub" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"}`}>🏢 Hub Self-Pickup</button>
-                                  <button suppressHydrationWarning type="button" onClick={() => setHandoverType("delivery")} className={`py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${handoverType === "delivery" ? "bg-black text-white shadow-xs" : "text-gray-400 hover:text-black"}`}>📍 Doorstep Delivery</button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={() => setHandoverType("hub")}
+                                    className={`py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${handoverType === "hub"
+                                        ? "bg-black text-white shadow-xs"
+                                        : "text-gray-400 hover:text-black"
+                                      }`}
+                                  >
+                                    🏢 Hub Self-Pickup
+                                  </button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={() => setHandoverType("delivery")}
+                                    className={`py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${handoverType === "delivery"
+                                        ? "bg-black text-white shadow-xs"
+                                        : "text-gray-400 hover:text-black"
+                                      }`}
+                                  >
+                                    📍 Doorstep Delivery
+                                  </button>
                                 </div>
                               </div>
+
                               {handoverType === "delivery" && (
-                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-1.5">
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  className="space-y-1.5"
+                                >
                                   <label className="text-[10px] font-bold uppercase text-gray-400 block">Delivery Address in Pune</label>
-                                  <input suppressHydrationWarning type="text" placeholder="e.g. Westin Hotel VIP Valet, Koregaon Park" required value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300" />
+                                  <input suppressHydrationWarning
+                                    type="text"
+                                    placeholder="e.g. Westin Hotel VIP Valet, Koregaon Park"
+                                    required
+                                    value={deliveryAddress}
+                                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300"
+                                  />
                                 </motion.div>
                               )}
                             </div>
                           )}
 
+                          {/* Address Inputs for Taxi Service */}
                           {serviceMode === "taxi" && (
                             <div className="grid grid-cols-1 gap-3">
                               <div>
                                 <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Pickup Address</label>
-                                <input suppressHydrationWarning type="text" placeholder="e.g. Pune International Airport Terminal 1" required value={pickupAddress} onChange={(e) => setPickupAddress(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#0071e3] placeholder-gray-300" />
+                                <input suppressHydrationWarning
+                                  type="text"
+                                  placeholder="e.g. Pune International Airport Terminal 1"
+                                  required
+                                  value={pickupAddress}
+                                  onChange={(e) => setPickupAddress(e.target.value)}
+                                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#0071e3] placeholder-gray-300"
+                                />
                               </div>
                               <div>
                                 <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Destination Address / City</label>
-                                <input suppressHydrationWarning type="text" placeholder="e.g. Baga Beach, North Goa" required value={destinationAddress} onChange={(e) => setDestinationAddress(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#0071e3] placeholder-gray-300" />
+                                <input suppressHydrationWarning
+                                  type="text"
+                                  placeholder="e.g. Baga Beach, North Goa"
+                                  required
+                                  value={destinationAddress}
+                                  onChange={(e) => setDestinationAddress(e.target.value)}
+                                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#0071e3] placeholder-gray-300"
+                                />
                               </div>
                             </div>
                           )}
 
+                          {/* Customer Information */}
                           <div>
                             <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Full Name</label>
-                            <input suppressHydrationWarning type="text" placeholder="John Doe" required value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300" />
-                          </div>
-                          <div>
-                            <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Email Address</label>
-                            <input suppressHydrationWarning type="email" placeholder="john@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300" />
+                            <input suppressHydrationWarning
+                              type="text"
+                              placeholder="John Doe"
+                              required
+                              value={fullName}
+                              onChange={(e) => setFullName(e.target.value)}
+                              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300"
+                            />
                           </div>
 
+                          <div>
+                            <label className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Email Address</label>
+                            <input suppressHydrationWarning
+                              type="email"
+                              placeholder="john@example.com"
+                              required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-black placeholder-gray-300"
+                            />
+                          </div>
+
+                          {/* Calculated pricing block with 30% Razorpay prepayment */}
                           {calculateDays() > 0 && selectedCar && (
                             <div className="bg-gray-50 border border-gray-200/60 p-3 rounded-xl space-y-1 font-mono text-[11px] text-gray-500">
-                              <div className="flex justify-between"><span>Duration:</span><span className="text-black font-semibold">{calculateDays()} days</span></div>
-                              <div className="flex justify-between"><span>Daily rate:</span><span>₹{(serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price).toLocaleString("en-IN")} × {calculateDays()}</span></div>
-                              {serviceMode === "taxi" && <div className="flex justify-between text-[10px] text-gray-450"><span>(Base Rate: ₹{selectedCar.price.toLocaleString("en-IN")} + Driver: ₹1,500)</span></div>}
-                              <div className="flex justify-between border-t border-gray-200/60 pt-1.5 font-bold text-gray-700"><span>ESTIMATED TOTAL:</span><span>₹{((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays()).toLocaleString("en-IN")}</span></div>
-                              <div className="flex justify-between pt-1 border-t border-dashed border-gray-200 text-[#0071e3]"><span>30% BOOKING CHARGE:</span><span className="font-bold">₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}</span></div>
-                              <div className="flex justify-between pt-0.5 text-gray-450"><span>70% DUE AT HANDOVER:</span><span className="font-semibold text-black">₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.7).toLocaleString("en-IN")}</span></div>
+                              <div className="flex justify-between">
+                                <span>Duration:</span>
+                                <span className="text-black font-semibold">{calculateDays()} days</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Daily rate:</span>
+                                <span>
+                                  ₹{(serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price).toLocaleString("en-IN")} × {calculateDays()}
+                                </span>
+                              </div>
+                              {serviceMode === "taxi" && (
+                                <div className="flex justify-between text-[10px] text-gray-450">
+                                  <span>(Base Rate: ₹{selectedCar.price.toLocaleString("en-IN")} + Driver: ₹1,500)</span>
+                                </div>
+                              )}
+                              <div className="flex justify-between border-t border-gray-200/60 pt-1.5 font-bold text-gray-700">
+                                <span>ESTIMATED TOTAL:</span>
+                                <span>
+                                  ₹{((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays()).toLocaleString("en-IN")}
+                                </span>
+                              </div>
+                              <div className="flex justify-between pt-1 border-t border-dashed border-gray-200 text-[#0071e3]">
+                                <span>30% BOOKING CHARGE (PAY NOW):</span>
+                                <span className="font-bold">
+                                  ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}
+                                </span>
+                              </div>
+                              <div className="flex justify-between pt-0.5 text-gray-400">
+                                <span>70% DUE AT HANDOVER:</span>
+                                <span className="font-semibold text-black">
+                                  ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.7).toLocaleString("en-IN")}
+                                </span>
+                              </div>
                             </div>
                           )}
-                          <button suppressHydrationWarning type="submit" className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-2.5 rounded-xl text-xs tracking-wider uppercase transition cursor-pointer flex justify-center shadow-sm">🔒 Proceed to Pay 30% Online</button>
+
+                          <button suppressHydrationWarning
+                            type="submit"
+                            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-2.5 rounded-xl text-xs tracking-wider uppercase transition cursor-pointer flex justify-center shadow-sm"
+                          >
+                            🔒 Proceed to Pay 30% Online
+                          </button>
                         </form>
+
                       </div>
                     </motion.div>
                   ) : (
-                    <motion.div key="razorpay" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="p-8 md:p-10 flex flex-col items-center justify-center font-sans select-none min-h-[480px]">
+                    <motion.div
+                      key="razorpay"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="p-8 md:p-10 flex flex-col items-center justify-center font-sans select-none min-h-[480px]"
+                    >
                       <div className="w-full max-w-md bg-white border border-[#d2d2d7]/50 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col font-sans">
+
+                        {/* Razorpay Brand Header */}
                         <div className="bg-[#0b1f3c] text-white px-6 py-5 flex items-center justify-between text-left">
                           <div className="flex flex-col">
                             <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest">⚡ RAZORPAY SECURED</span>
@@ -1429,74 +2450,200 @@ export default function Home() {
                           </div>
                           <div className="text-right flex flex-col">
                             <span className="text-[8px] text-gray-400 font-bold uppercase text-right leading-none block mb-0.5">PAYING 30% DEPOSIT</span>
-                            <span className="text-base font-bold text-[#3399ff]">₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}</span>
+                            <span className="text-base font-bold text-[#3399ff]">
+                              ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}
+                            </span>
                           </div>
                         </div>
 
+                        {/* Payment Wizard Screen State Machine */}
                         {paymentStep === "gateway" && (
                           <div className="p-6 flex flex-col text-left space-y-4">
-                            <div className="space-y-1"><span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Select Payment Option</span></div>
-                            <div className="grid grid-cols-3 gap-2 border-b border-gray-100 pb-3">
-                              <button suppressHydrationWarning type="button" onClick={() => setSelectedPaymentMethod("upi")} className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "upi" ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]" : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"}`}>📱 UPI / QR</button>
-                              <button suppressHydrationWarning type="button" onClick={() => setSelectedPaymentMethod("card")} className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "card" ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]" : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"}`}>💳 CARD</button>
-                              <button suppressHydrationWarning type="button" onClick={() => setSelectedPaymentMethod("netbanking")} className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "netbanking" ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]" : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"}`}>🏦 NETBANK</button>
+                            <div className="space-y-1">
+                              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Select Payment Option</span>
                             </div>
 
-                            <AnimatePresence mode="wait">
-                              {selectedPaymentMethod === "upi" && (
-                                <motion.div key="upi" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} className="space-y-3 pt-1">
-                                  <div>
-                                    <label className="text-[9px] font-bold text-gray-400 uppercase">Enter Virtual Payment Address (VPA)</label>
-                                    <input suppressHydrationWarning type="text" placeholder="john@okaxis" value={upiId} onChange={(e) => setUpiId(e.target.value)} className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300" />
-                                  </div>
-                                  <div className="flex gap-2">
-                                    <button suppressHydrationWarning type="button" onClick={() => setUpiId("paytm@gpay")} className="bg-gray-50 hover:bg-gray-100 text-[10px] font-medium text-gray-600 px-2.5 py-1 rounded-lg border border-gray-200 cursor-pointer">GPay VPA</button>
-                                    <button suppressHydrationWarning type="button" onClick={() => setUpiId("success@razorpay")} className="bg-gray-50 hover:bg-gray-100 text-[10px] font-medium text-gray-600 px-2.5 py-1 rounded-lg border border-gray-200 cursor-pointer">Auto-Fill Test</button>
-                                  </div>
-                                  <div className="text-[10px] text-gray-400 leading-normal font-medium bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">ℹ️ Enter any simulated handle to trigger confirmation.</div>
-                                </motion.div>
-                              )}
+                            {/* Method Selector Tabs */}
+                            <div className="grid grid-cols-3 gap-2 border-b border-gray-100 pb-3">
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setSelectedPaymentMethod("upi")}
+                                className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "upi"
+                                    ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]"
+                                    : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"
+                                  }`}
+                              >
+                                📱 UPI / QR
+                              </button>
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setSelectedPaymentMethod("card")}
+                                className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "card"
+                                    ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]"
+                                    : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"
+                                  }`}
+                              >
+                                💳 CARD
+                              </button>
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={() => setSelectedPaymentMethod("netbanking")}
+                                className={`py-2 rounded-xl font-bold text-[9px] uppercase transition ${selectedPaymentMethod === "netbanking"
+                                    ? "bg-[#2b6bf3]/10 text-[#2b6bf3] border border-[#2b6bf3]"
+                                    : "bg-gray-50 border border-gray-200 text-gray-500 hover:text-black cursor-pointer"
+                                  }`}
+                              >
+                                🏦 NETBANK
+                              </button>
+                            </div>
 
-                              {selectedPaymentMethod === "card" && (
-                                <motion.div key="card" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} className="space-y-3 pt-1">
-                                  <div>
-                                    <label className="text-[9px] font-bold text-gray-400 uppercase">Card Number</label>
-                                    <input suppressHydrationWarning type="text" placeholder="4111 2222 3333 4444" maxLength={19} value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono" />
-                                  </div>
-                                  <div className="grid grid-cols-2 gap-3">
-                                    <div>
-                                      <label className="text-[9px] font-bold text-gray-400 uppercase">Expiry (MM/YY)</label>
-                                      <input suppressHydrationWarning type="text" placeholder="12/29" maxLength={5} value={cardExpiry} onChange={(e) => setCardExpiry(e.target.value)} className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono" />
-                                    </div>
-                                    <div>
-                                      <label className="text-[9px] font-bold text-gray-400 uppercase">CVV</label>
-                                      <input suppressHydrationWarning type="password" placeholder="•••" maxLength={3} value={cardCvv} onChange={(e) => setCardCvv(e.target.value)} className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono" />
-                                    </div>
-                                  </div>
-                                  <button suppressHydrationWarning type="button" onClick={() => { setCardNumber("4111 1111 1111 1111"); setCardExpiry("12/30"); setCardCvv("123"); }} className="text-[10px] text-[#0071e3] font-semibold hover:underline block text-right cursor-pointer">Use Demo Visa Card</button>
-                                </motion.div>
-                              )}
-
-                              {selectedPaymentMethod === "netbanking" && (
-                                <motion.div key="netbanking" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} className="space-y-3 pt-1">
-                                  <span className="text-[10px] text-gray-400 block font-medium">Select major simulated banks:</span>
-                                  <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold">
-                                    <button suppressHydrationWarning type="button" onClick={handleSimulatePayment} className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer">🏦 SBI Bank</button>
-                                    <button suppressHydrationWarning type="button" onClick={handleSimulatePayment} className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer">🏦 HDFC Bank</button>
-                                    <button suppressHydrationWarning type="button" onClick={handleSimulatePayment} className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer">🏦 ICICI Bank</button>
-                                    <button suppressHydrationWarning type="button" onClick={handleSimulatePayment} className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer">🏦 Axis Bank</button>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-
-                            {selectedPaymentMethod !== "netbanking" && (
-                              <button suppressHydrationWarning type="button" onClick={handleSimulatePayment} className="w-full mt-4 bg-[#2b6bf3] hover:bg-[#1a56cf] text-white font-bold py-3 rounded-2xl text-xs tracking-wider uppercase transition cursor-pointer flex justify-center items-center gap-1 shadow-md shadow-blue-500/10">🔒 Securely Pay ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}</button>
+                            {/* Render UPI details */}
+                            {selectedPaymentMethod === "upi" && (
+                              <div className="space-y-3 pt-1">
+                                <div>
+                                  <label className="text-[9px] font-bold text-gray-400 uppercase">Enter Virtual Payment Address (VPA)</label>
+                                  <input suppressHydrationWarning
+                                    type="text"
+                                    placeholder="john@okaxis"
+                                    value={upiId}
+                                    onChange={(e) => setUpiId(e.target.value)}
+                                    className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300"
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={() => setUpiId("paytm@gpay")}
+                                    className="bg-gray-50 hover:bg-gray-100 text-[10px] font-medium text-gray-600 px-2.5 py-1 rounded-lg border border-gray-200 cursor-pointer"
+                                  >
+                                    GPay VPA
+                                  </button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={() => setUpiId("success@razorpay")}
+                                    className="bg-gray-50 hover:bg-gray-100 text-[10px] font-medium text-gray-600 px-2.5 py-1 rounded-lg border border-gray-200 cursor-pointer"
+                                  >
+                                    Auto-Fill Test
+                                  </button>
+                                </div>
+                                <div className="text-[10px] text-gray-400 leading-normal font-medium bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
+                                  ℹ️ Enter any simulated handle (e.g. `success@razorpay`) to trigger payment confirmation.
+                                </div>
+                              </div>
                             )}
-                            <button suppressHydrationWarning type="button" onClick={() => setIsPaying(false)} className="w-full text-center text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-wider transition pt-1 cursor-pointer">Go Back to Reservation Details</button>
+
+                            {/* Render Card details */}
+                            {selectedPaymentMethod === "card" && (
+                              <div className="space-y-3 pt-1">
+                                <div>
+                                  <label className="text-[9px] font-bold text-gray-400 uppercase">Card Number</label>
+                                  <input suppressHydrationWarning
+                                    type="text"
+                                    placeholder="4111 2222 3333 4444"
+                                    maxLength={19}
+                                    value={cardNumber}
+                                    onChange={(e) => setCardNumber(e.target.value)}
+                                    className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono"
+                                  />
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="text-[9px] font-bold text-gray-400 uppercase">Expiry (MM/YY)</label>
+                                    <input suppressHydrationWarning
+                                      type="text"
+                                      placeholder="12/29"
+                                      maxLength={5}
+                                      value={cardExpiry}
+                                      onChange={(e) => setCardExpiry(e.target.value)}
+                                      className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-[9px] font-bold text-gray-400 uppercase">CVV</label>
+                                    <input suppressHydrationWarning
+                                      type="password"
+                                      placeholder="•••"
+                                      maxLength={3}
+                                      value={cardCvv}
+                                      onChange={(e) => setCardCvv(e.target.value)}
+                                      className="w-full mt-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-black focus:outline-none focus:border-[#2b6bf3] placeholder-gray-300 font-mono"
+                                    />
+                                  </div>
+                                </div>
+                                <button suppressHydrationWarning
+                                  type="button"
+                                  onClick={() => {
+                                    setCardNumber("4111 1111 1111 1111");
+                                    setCardExpiry("12/30");
+                                    setCardCvv("123");
+                                  }}
+                                  className="text-[10px] text-[#0071e3] font-semibold hover:underline block text-right cursor-pointer"
+                                >
+                                  Use Demo Visa Card
+                                </button>
+                              </div>
+                            )}
+
+                            {/* Render Netbanking details */}
+                            {selectedPaymentMethod === "netbanking" && (
+                              <div className="space-y-3 pt-1">
+                                <span className="text-[10px] text-gray-400 block font-medium">Select major simulated banks:</span>
+                                <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold">
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={handleSimulatePayment}
+                                    className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+                                  >
+                                    🏦 SBI Bank
+                                  </button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={handleSimulatePayment}
+                                    className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+                                  >
+                                    🏦 HDFC Bank
+                                  </button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={handleSimulatePayment}
+                                    className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+                                  >
+                                    🏦 ICICI Bank
+                                  </button>
+                                  <button suppressHydrationWarning
+                                    type="button"
+                                    onClick={handleSimulatePayment}
+                                    className="p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-left hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+                                  >
+                                    🏦 Axis Bank
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Payment Action Button */}
+                            {selectedPaymentMethod !== "netbanking" && (
+                              <button suppressHydrationWarning
+                                type="button"
+                                onClick={handleSimulatePayment}
+                                className="w-full mt-4 bg-[#2b6bf3] hover:bg-[#1a56cf] text-white font-bold py-3 rounded-2xl text-xs tracking-wider uppercase transition cursor-pointer flex justify-center items-center gap-1 shadow-md shadow-blue-500/10"
+                              >
+                                🔒 Securely Pay ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}
+                              </button>
+                            )}
+
+                            {/* Cancel payment back to form */}
+                            <button suppressHydrationWarning
+                              type="button"
+                              onClick={() => setIsPaying(false)}
+                              className="w-full text-center text-[10px] font-bold text-gray-400 hover:text-black uppercase tracking-wider transition pt-1 cursor-pointer"
+                            >
+                              Go Back to Reservation Details
+                            </button>
                           </div>
                         )}
 
+                        {/* Processing screen */}
                         {paymentStep === "processing" && (
                           <div className="p-10 flex flex-col items-center justify-center text-center space-y-4 min-h-[280px]">
                             <div className="w-10 h-10 border-4 border-gray-200 border-t-[#2b6bf3] rounded-full animate-spin" />
@@ -1507,27 +2654,42 @@ export default function Home() {
                           </div>
                         )}
 
+                        {/* Success confirmation animation */}
                         {paymentStep === "success" && (
                           <div className="p-10 flex flex-col items-center justify-center text-center space-y-4 min-h-[280px]">
-                            <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center border-2 border-emerald-500"><Check size={24} strokeWidth={3} /></div>
+                            <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center border-2 border-emerald-500 animate-scaleIn">
+                              <Check size={24} strokeWidth={3} />
+                            </div>
                             <div className="space-y-1">
                               <h4 className="font-bold text-sm text-emerald-600">Payment Secured Successfully</h4>
                               <p className="text-[10px] text-gray-400 font-mono">ID: {paymentId}</p>
                             </div>
                           </div>
                         )}
+
                       </div>
                     </motion.div>
                   )
                 ) : (
-                  <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="p-10 text-center flex flex-col items-center justify-center space-y-5 select-none">
-                    <div className="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center"><ShieldCheck size={32} /></div>
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="p-10 text-center flex flex-col items-center justify-center space-y-5 select-none"
+                  >
+                    <div className="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center">
+                      <ShieldCheck size={32} />
+                    </div>
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500 font-mono">RESERVATION SECURED</span>
                       <h3 className="text-2xl font-bold text-black mt-1">Booking Confirmed!</h3>
-                      <p className="text-gray-500 text-xs mt-2 max-w-md mx-auto leading-relaxed">Thank you, <span className="font-bold text-black">{fullName}</span>. Your premium rental booking for the <span className="font-bold text-black">{selectedCar.name}</span> is successfully processed.</p>
+                      <p className="text-gray-500 text-xs mt-2 max-w-md mx-auto leading-relaxed">
+                        Thank you, <span className="font-bold text-black">{fullName}</span>. Your premium rental booking for the <span className="font-bold text-black">{selectedCar.name}</span> is successfully processed.
+                      </p>
                     </div>
 
+                    {/* Razorpay Transaction Breakdown Receipt */}
                     <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 max-w-sm w-full space-y-2 text-xs font-sans text-left">
                       <h4 className="font-bold text-[10px] uppercase tracking-wider text-gray-400 border-b border-gray-200 pb-1.5">Payment Summary</h4>
                       <div className="flex justify-between">
@@ -1537,13 +2699,17 @@ export default function Home() {
                       {serviceMode === "self-drive" && (
                         <div className="flex justify-between text-gray-400 text-[10px]">
                           <span>Handover:</span>
-                          <span className="font-semibold text-black uppercase text-[10px]">{handoverType === "delivery" ? `Delivery` : "Hub Pickup"}</span>
+                          <span className="font-semibold text-black uppercase text-[10px]">
+                            {handoverType === "delivery" ? `Delivery` : "Hub Pickup"}
+                          </span>
                         </div>
                       )}
                       {serviceMode === "self-drive" && handoverType === "delivery" && (
                         <div className="flex justify-between text-gray-400 text-[10px]">
                           <span>Address:</span>
-                          <span className="font-medium truncate max-w-[200px] text-black">{deliveryAddress}</span>
+                          <span className="font-medium truncate max-w-[200px] text-black">
+                            {deliveryAddress}
+                          </span>
                         </div>
                       )}
                       {serviceMode === "taxi" && (
@@ -1560,15 +2726,21 @@ export default function Home() {
                       )}
                       <div className="flex justify-between">
                         <span className="text-gray-500">Total Service Cost:</span>
-                        <span className="font-semibold text-black">₹{((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays()).toLocaleString("en-IN")}</span>
+                        <span className="font-semibold text-black">
+                          ₹{((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays()).toLocaleString("en-IN")}
+                        </span>
                       </div>
                       <div className="flex justify-between text-emerald-600 font-medium">
                         <span>30% Advanced Paid:</span>
-                        <span className="font-bold">₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}</span>
+                        <span className="font-bold">
+                          ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.3).toLocaleString("en-IN")}
+                        </span>
                       </div>
                       <div className="flex justify-between text-gray-500 font-medium">
                         <span>70% Balance Due on Handover:</span>
-                        <span className="font-bold text-black">₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.7).toLocaleString("en-IN")}</span>
+                        <span className="font-bold text-black">
+                          ₹{Math.round((serviceMode === "taxi" ? selectedCar.price + 1500 : selectedCar.price) * calculateDays() * 0.7).toLocaleString("en-IN")}
+                        </span>
                       </div>
                       <div className="border-t border-gray-200 pt-2 text-[10px] text-gray-400 font-mono space-y-0.5">
                         <div>REF CODE: <span className="font-semibold text-black">{refCode}</span></div>
@@ -1576,14 +2748,23 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <button suppressHydrationWarning onClick={resetBookingForm} className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer transition">Done</button>
+                    <button suppressHydrationWarning
+                      onClick={resetBookingForm}
+                      className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer transition"
+                    >
+                      Done
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
+
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
     </div>
+
   );
+
 }
